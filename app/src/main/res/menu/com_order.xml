@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <!--  <item
+        android:id="@+id/com_order_print"
+        android:orderInCategory="100"
+        android:title="打印"
+        app:showAsAction="never" />-->
+
+
+    <item
+        android:id="@+id/com_order_addgood"
+        android:orderInCategory="100"
+        android:title="加菜"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/com_order_refound"
+        android:orderInCategory="100"
+        android:title="退单"
+        app:showAsAction="never" />
+    <!--<item
+        android:id="@+id/com_order_com"
+        android:orderInCategory="100"
+        android:title="菜品上齐"
+        app:showAsAction="never" />-->
+    <item
+        android:id="@+id/com_order_next"
+        android:orderInCategory="100"
+        android:title="买单"
+        app:showAsAction="never" />
+</menu>

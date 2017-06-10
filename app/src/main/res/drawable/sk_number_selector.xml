@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--&lt;!&ndash; 默认时的背景图片&ndash;&gt;-->
+    <!--<item android:drawable="@null" />-->
+    <!--&lt;!&ndash; 没有焦点时的背景图片 &ndash;&gt;-->
+    <!--<item android:state_window_focused="false"-->
+    <!--android:drawable="@null" />-->
+    <!-- 非触摸模式下获得焦点并单击时的背景图片 -->
+    <item android:drawable="@drawable/sk_number_shape" android:state_pressed="true" />
+
+</selector>

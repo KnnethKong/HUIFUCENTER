@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/foodorder_spinner"
+            style="@style/spiner_bg"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="@dimen/dimen_20_dp"
+            android:entries="@array/foodorderstatus" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#e5e5e5" />
+
+        <Button
+            android:id="@+id/dingdan_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="@dimen/dimen_20_dp"
+            android:background="@null"
+            android:drawablePadding="@dimen/dimen_20_dp"
+            android:drawableRight="@mipmap/dropdown_icon"
+            android:text="时间选择"
+            android:textColor="@color/txtcolor"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <library.PullToRefreshListView
+        android:id="@+id/foodorder_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="2dp" />
+
+
+</LinearLayout>

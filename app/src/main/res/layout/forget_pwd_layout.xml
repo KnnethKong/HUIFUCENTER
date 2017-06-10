@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/forget_oneimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="30.0dip"
+            android:minWidth="30.0dip"
+            android:src="@mipmap/icon_one" />
+
+
+        <ImageView
+            android:id="@+id/forget_twoimg"
+            style="@style/forget_password_icon_style"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/icon_gray_two" />
+
+        <ImageView
+            android:id="@+id/forget_threimg"
+            style="@style/forget_password_icon_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30.0dip"
+            android:contentDescription="chongzhimima"
+            android:src="@mipmap/icon_gray_three" />
+
+        <TextView
+            android:id="@+id/forget_onetxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forget_oneimg"
+            android:text="账户验证" />
+
+        <TextView
+            android:id="@+id/forget_twotxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/forget_twoimg"
+            android:layout_below="@+id/forget_twoimg"
+            android:text="短信验证" />
+
+        <TextView
+            android:id="@+id/forget_thretxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/forget_threimg"
+            android:layout_below="@+id/forget_threimg"
+            android:text="重置密码" />
+
+        <ImageView
+            android:id="@+id/forget_one_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14.0dip"
+            android:layout_toLeftOf="@id/forget_threimg"
+            android:layout_toRightOf="@id/forget_twoimg"
+            android:src="@mipmap/icon_box" />
+
+        <ImageView
+            android:id="@+id/forget_two_thre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14.0dip"
+            android:layout_toLeftOf="@id/forget_twoimg"
+            android:layout_toRightOf="@id/forget_oneimg"
+            android:src="@mipmap/icon_box" />
+    </RelativeLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:hint="输入帐号"
+        android:textColor="@color/mititle" />
+
+    <Button
+        android:id="@+id/forget_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/forget_nextbg"
+        android:text="验证"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </LinearLayout>
+</LinearLayout>

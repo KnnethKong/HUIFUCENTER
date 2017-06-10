@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/toolbar_layout" />
+
+    <TextView
+        android:id="@+id/goodscat_nodata"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@color/consumer_bg"
+        android:gravity="center"
+        android:text="暂无更多数据"
+        android:textSize="@dimen/dimen_14_dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/goodscat_parentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/goodscat_toolbar"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/goodscat_typelist"
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@color/left_list"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/user_center_divide_line"
+                android:dividerHeight="1px"
+                android:fastScrollEnabled="false"
+                android:listSelector="#00000000"
+                android:scrollbars="none" />
+
+            <gjcm.kxf.drawview.PinnedHeaderListView
+                android:id="@+id/goodscat_pinnerlist"
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="#fff"
+                android:cacheColorHint="#00000000"
+                android:divider="@color/user_center_divide_line"
+                android:dividerHeight="0.5px"
+                android:listSelector="#00000000" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/goodscat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/user_center_black_text"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.2"
+                android:gravity="center"
+                android:padding="@dimen/dimen_5_dp">
+
+                <ImageView
+                    android:id="@+id/goodscat_shopping_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/shopping_cart" />
+
+                <TextView
+                    android:id="@+id/goodscat_shoppingnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/goodscat_shopping_img"
+                    android:layout_alignTop="@id/goodscat_shopping_img"
+                    android:background="@drawable/shape_shopping_cart"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/goodscat_price"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="0.4"
+                android:background="@color/user_center_black_text"
+                android:gravity="left|center"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+            <TextView
+                android:id="@+id/goodscat_settlement"
+                android:layout_width="@dimen/dimen_0_dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:text="下单"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/goodscat_cardlayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/goodscat_toolbar"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <View
+                android:id="@+id/bg_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:background="#a0000000"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/goodscat_orderanimlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="160dp"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/shopping_cart_bg"
+                    android:paddingBottom="@dimen/dimen_6_dp"
+                    android:paddingLeft="@dimen/dimen_20_dp"
+                    android:paddingTop="@dimen/dimen_6_dp"
+                    android:text="购物车"
+                    android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:background="@color/consumer_bg"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/goodscat_order_txt"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="当前购物车为空快去选购吧！"
+                        android:textSize="@dimen/dimen_12_dp"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/goodscat_order_list"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:cacheColorHint="#00000000"
+                        android:divider="@color/user_center_divide_line"
+                        android:dividerHeight="1px"
+                        android:listSelector="#00000000"
+                        android:orientation="vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </RelativeLayout>
+</LinearLayout>

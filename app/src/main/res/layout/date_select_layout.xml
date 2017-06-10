@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_2_dp"
+        android:background="#F1F1F1" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/date_select_btn"
+        android:layout_marginTop="@dimen/dimen_12_dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/date_selct_nowdate"
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_6_dp"
+            android:layout_weight="1"
+            android:background="@mipmap/date_normal"
+            android:text="日汇总"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/date_selct_interval"
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10_dp"
+            android:layout_marginRight="@dimen/dimen_6_dp"
+            android:layout_weight="1"
+            android:background="@mipmap/date_select"
+            android:text="区间汇总"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dimen_10_dp"
+        android:text="日期"
+        android:textColor="@color/qianhui" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1_dp"
+        android:background="#f1f1f1" />
+
+    <RelativeLayout
+        android:id="@+id/date_nomarl_1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp">
+
+        <TextView
+            android:id="@+id/date_selct_jian"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="—"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/date_selct_nomarl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="2017-02-08"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/date_selct_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="+"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/date_nomarl_2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/date_selct_beigin"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="2017-02-08"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="  —  "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/date_selct_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="2017-02-08"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1_dp"
+        android:background="#f1f1f1" />
+
+
+    <Button
+        android:id="@+id/date_selct_ok"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_30_dp"
+        android:background="@mipmap/date_select"
+        android:text="确 定"
+        android:textColor="@color/white"
+        android:textSize="@dimen/store_sum_am" />
+
+
+</LinearLayout>

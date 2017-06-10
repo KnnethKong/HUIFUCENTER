@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_perceliner"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_bg">
+
+    <!--<include-->
+    <!--layout="@layout/title_top          app:layout_marginTopPercent="12%"
+"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+    <View
+        android:id="@+id/wyview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_heightPercent="12%"
+        app:layout_widthPercent="100%" />
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/login_percentimg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wyview"
+        android:layout_marginTop="20dp"
+        app:layout_widthPercent="100%">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/login_top" />
+    </android.support.percent.PercentRelativeLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/login_enmae_pr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_percentimg"
+        app:layout_marginLeftPercent="20%"
+        app:layout_marginRightPercent="20%"
+        app:layout_marginTopPercent="10%">
+
+        <TextView
+            android:id="@+id/login_ename_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账户："
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/login_uname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/login_ename_txt"
+            android:background="@null"
+            android:hint="请输入用户名"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textCursorDrawable="@drawable/login_editcursor"
+            android:textSize="20dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/login_ename_txt"
+            android:background="@mipmap/login_bglin"
+            app:layout_widthPercent="100%" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/login_epwd_pr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_enmae_pr"
+        android:layout_marginTop="20dp"
+        app:layout_marginLeftPercent="20%"
+        app:layout_marginRightPercent="20%">
+
+        <TextView
+            android:id="@+id/login_epwd_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码："
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/login_pwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/login_epwd_txt"
+            android:background="@null"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textCursorDrawable="@drawable/login_editcursor"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/login_edit_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/login_pwd"
+            android:src="@mipmap/biyan" />
+
+        <View
+            android:id="@+id/loginwuyong"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/login_epwd_txt"
+            android:background="@mipmap/login_bglin"
+            app:layout_widthPercent="100%" />
+
+        <CheckBox
+            android:id="@+id/login_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/loginwuyong"
+            android:layout_marginTop="14dp"
+            android:checked="false"
+            android:text="是否记住密码？"
+            android:textColor="@color/white" />
+
+    </android.support.percent.PercentRelativeLayout>
+
+    <Button
+        android:id="@+id/login_sendbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_epwd_pr"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/login_btn"
+        android:text="登录"
+        android:textColor="@color/white"
+        android:textSize="22dp" />
+
+    <TextView
+        android:id="@+id/login_changepwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_sendbtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:text="修改密码？"
+        android:textColor="@color/white"
+        android:visibility="invisible" />
+
+</android.support.percent.PercentRelativeLayout>
+

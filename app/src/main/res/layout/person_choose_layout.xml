@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <EditText
+        android:id="@+id/person_choosenum"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shanchu"
+        android:focusable="true"
+        android:hint="用餐人数"
+        android:inputType="number"
+        android:maxLength="4"
+        android:textSize="20sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="@dimen/dimen_20_dp"
+        android:background="@drawable/dateok"
+        android:onClick="personChooseOk"
+        android:text="确 认"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>

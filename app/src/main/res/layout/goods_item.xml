@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/good_item_img"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="4dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/appicon" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/good_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:text="红烧葱姜蒜"
+            android:textColor="@color/txtcolor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/wuyong1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/good_item_name"
+            android:layout_marginTop="4dp"
+            android:text="¥" />
+
+        <TextView
+            android:id="@+id/good_item_am"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_marginLeft="4dp"
+            android:layout_toRightOf="@id/wuyong1"
+            android:text="23.69" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_toRightOf="@id/good_item_am"
+            android:text="/份" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/good_item_del"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/jianjianbg"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/huang1"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/good_item_number"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:maxLength="10"
+                android:text="20"
+                android:textColor="@color/hei3"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/good_item_add"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/jiajianbg"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/huang1"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

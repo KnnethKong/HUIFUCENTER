@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/broad_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#FFFFFFFF"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/toolbar_bg"
+            app:tabMode="fixed"
+            app:tabTextColor="#FF000000">
+
+        </android.support.design.widget.TabLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/broad_all_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!-- <LinearLayout android:layout_weight=".8"
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight=".1"
+         android:orientation="horizontal"
+         android:visibility="gone">
+
+         <Button
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:drawableLeft="@android:drawable/ic_search_category_default"
+             android:text="搜索" />
+
+         <Button
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:drawableLeft="@android:drawable/ic_menu_share"
+             android:text="扫码" />
+     </LinearLayout>
+ -->
+</LinearLayout>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/order_detail_canzhuo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLength="8"
+                android:text="餐桌"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/order_detail_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/order_detail_canzhuo"
+                android:background="@drawable/yixiadan"
+                android:text="已下单"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/order_detail_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_detail_canzhuo"
+                android:layout_marginTop="6dp"
+                android:text="人数: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/order_detail_people"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_toRightOf="@id/order_detail_5"
+                android:textColor="@color/txtorder"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/order_detail_9"
+                android:layout_width="2dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:layout_toRightOf="@id/order_detail_people"
+                android:background="#E4E5E5" />
+
+            <TextView
+                android:id="@+id/order_detail_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_marginTop="6dp"
+                android:layout_toRightOf="@id/order_detail_9"
+                android:text="菜盘: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/order_detail_foodnum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/order_detail_6"
+                android:text="246"
+                android:textColor="@color/txtorder"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/order_detail_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_alignParentEnd="true"
+                android:text="元" />
+
+            <TextView
+                android:id="@+id/order_detail_orderam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/order_detail_7"
+                android:ellipsize="end"
+                android:maxLength="8"
+                android:text="246"
+                android:textColor="@color/toolbar_bg"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_5"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/order_detail_orderam"
+                android:text="金额:" />
+
+
+            <TextView
+                android:id="@+id/order_detail_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_detail_5"
+                android:layout_marginTop="6dp"
+                android:text="订单号: "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/order_detail_orderno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_3"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/order_detail_3"
+                android:textColor="@color/txtorder" />
+
+            <TextView
+                android:id="@+id/order_detail_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_3"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="4dp"
+                android:textColor="@color/txtorder" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/order_detail_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="买家信息: " />
+
+            <TextView
+                android:id="@+id/order_detail_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_1"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/order_detail_1"
+                android:textColor="@color/txtorder" />
+
+            <TextView
+                android:id="@+id/order_detail_phone"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_1"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/txtorder" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/order_detail_1"
+                android:layout_marginTop="6dp"
+                android:layout_toLeftOf="@id/order_detail_phone"
+                android:text="联系方式: " />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:background="#E4E5E5" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/white"
+                android:text="订单详情"
+                android:textColor="@color/txtcolor"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#E4E5E5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/order_detail_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.8" />
+
+            <LinearLayout
+                android:id="@+id/food_detail_showline"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".15"
+                android:background="@color/toolbar_bg"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/food_detail_jiedan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="同 意 接 单 "
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/white" />
+
+
+                <Button
+                    android:id="@+id/food_detail_tuidan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:text="订单作废"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+</LinearLayout>

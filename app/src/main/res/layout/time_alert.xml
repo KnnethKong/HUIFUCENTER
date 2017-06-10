@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/time_liner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_marginTopPercent="20%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="三天"
+            android:textSize="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="七天"
+            android:textSize="22dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="16dp"
+            android:text="十天"
+            android:textSize="22dp" />
+    </LinearLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/time_begin_re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_liner"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal">
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_beigin_year"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:id="@+id/time_beigin_tnian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_beigin_year"
+            android:text="年"
+            android:textSize="22dp" />
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_beigin_month"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_toRightOf="@id/time_beigin_tnian"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:id="@+id/time_beigin_tyue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_beigin_month"
+            android:text="月"
+            android:textSize="22dp" />
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_beigin_day"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_toRightOf="@id/time_beigin_tyue"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_beigin_day"
+            android:text="日"
+            android:textSize="22dp" />
+    </android.support.percent.PercentRelativeLayout>
+
+    <android.support.percent.PercentRelativeLayout
+        android:id="@+id/time_end_re"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_begin_re"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal">
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_end_year"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:id="@+id/time_end_tnian"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_end_year"
+            android:text="年"
+            android:textSize="22dp" />
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_end_month"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_toRightOf="@id/time_end_tnian"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:id="@+id/time_end_tyue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_end_month"
+            android:text="月"
+            android:textSize="22dp" />
+
+        <gjcm.kxf.drawview.PickView
+            android:id="@+id/time_end_day"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_toRightOf="@id/time_end_tyue"
+            app:layout_heightPercent="20%"
+            app:layout_widthPercent="20%" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/time_end_day"
+            android:text="日"
+            android:textSize="22dp" />
+    </android.support.percent.PercentRelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/time_end_re"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="确定" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="14dp"
+            android:text="取消" />
+
+    </LinearLayout>
+
+
+</android.support.percent.PercentRelativeLayout>

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/toolbar_lb"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp" />
+
+    <View
+        android:id="@+id/store_sum_wy"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_2_dp"
+        android:layout_below="@id/toolbar_lb"
+        android:background="#F1F1F1" />
+
+    <RelativeLayout
+        android:id="@+id/store_sum_rela"
+        android:layout_width="@dimen/dimen_0_dp"
+        android:layout_height="@dimen/dimen_0_dp"
+        android:layout_below="@id/store_sum_wy"
+        android:background="#1c8fdc"
+        app:layout_heightPercent="30%"
+        app:layout_widthPercent="100%">
+
+        <ImageView
+            android:id="@+id/store_txt_print"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/dimen_8_dp"
+            android:background="@drawable/white_drawble"
+            android:padding="@dimen/dimen_4_dp"
+            android:src="@mipmap/print" />
+
+        <ImageView
+            android:id="@+id/store_txt_date"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/dimen_8_dp"
+            android:background="@drawable/white_drawble"
+            android:padding="@dimen/dimen_4_dp"
+            android:src="@mipmap/date" />
+
+        <TextView
+            android:id="@+id/store_sum_sum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/store_txt_tmsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/store_sum_sum"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/bababa"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/store_wuyong"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/store_sum_rela"
+        android:background="#F1F1F1"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_heightPercent="10%">
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
+                android:text=" 单数：" />
+
+            <TextView
+                android:id="@+id/store_txt_oredrnum"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
+                android:text=" 优 惠：" />
+
+            <TextView
+                android:id="@+id/store_txt_youhui"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/store_wuyong2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_1_dp"
+        android:layout_below="@id/store_wuyong"
+        android:background="#ffff" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/store_wuyong2"
+        android:background="#F1F1F1"
+        app:layout_heightPercent="10%">
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
+                android:text=" 人 数：" />
+
+            <TextView
+                android:id="@+id/store_txt_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="@dimen/dimen_0_dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/store_txt_refound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.percent.PercentRelativeLayout>
+

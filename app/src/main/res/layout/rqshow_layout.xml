@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/rqshow_bg"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/rqshow_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@mipmap/tittle_bg"
+        android:theme="@style/myToobar">
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <!--<ImageView-->
+    <!--android:id="@+id/rqshow_close"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginTop="18dp"-->
+    <!--android:src="@mipmap/fanhui" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/rqshow_btn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:text="关闭"-->
+    <!--android:visibility="gone" />-->
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        app:layout_marginLeftPercent="10%"
+        app:layout_marginRightPercent="10%">
+
+        <TextView
+            android:id="@+id/rqshow_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/txtcolor"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/rqshow_img"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/rqshow_refesh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rqshow_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@mipmap/xunhuan"
+            android:gravity="bottom"
+            android:paddingLeft="4dp"
+            android:text="五分钟自动更新，请当面使用"
+            android:textSize="12sp" />
+
+
+    </android.support.percent.PercentRelativeLayout>
+
+</android.support.percent.PercentRelativeLayout>

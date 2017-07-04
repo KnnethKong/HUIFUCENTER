@@ -181,7 +181,7 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
                     peple = json.getString("personNum");
                     boolean isarray = json.getBoolean("isarray");
                     orderid = json.getString("id");
-                    deskid = json.getString("deskid");
+                    deskid = json.optString("deskid");
                     ordersum = json.getDouble("orderAmount");
                     ordercode = json.getInt("orderStatus");
                     orderWay = json.getInt("orderWay");
@@ -463,7 +463,7 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
     }
 
     ProgressDialog progressDialog;
-
+//14 结账 15 关闭
     public void changeStats(String id, int s) {
         if (progressDialog != null)
             progressDialog.dismiss();
@@ -553,8 +553,8 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
         builder.setNegativeButton(" 取消下单 ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                refoundOrder();
-
+//                refoundOrder();
+                     dialog.dismiss();
             }
         });
         builder.setCancelable(false);
@@ -567,7 +567,6 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
         String fid = foodsEntities.get(i).getFid();
         dellist.add(fid);
         foodsEntities.remove(i);
-
         deatailAdapter.notifyDataSetChanged();
         doScale();
     }
@@ -640,7 +639,6 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
                     progressDialog.dismiss();
                 Toast.makeText(FoodOrderDetailActivity.this, "接单成功", Toast.LENGTH_SHORT).show();
                 send2Order(OrderId, "12");
-
             }
 
             @Override
@@ -648,7 +646,6 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
                 if (progressDialog != null)
                     progressDialog.dismiss();
                 Toast.makeText(FoodOrderDetailActivity.this, "接单失败:" + ex.getMessage(), Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
@@ -669,7 +666,8 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
         if (progressDialog != null)
             progressDialog.dismiss();
         progressDialog = ProgressDialog.show(FoodOrderDetailActivity.this, "", "正在更新到支付宝", true, false);
-        RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
+        //RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
+        RequestParams requestParams = new RequestParams("http://weijing.f3322.net:9090/diancan/sendorder");
         requestParams.addBodyParameter("merchantId", merchantId);
         requestParams.addBodyParameter("storeId", storeId);
         requestParams.addBodyParameter("orderId", orderid);
@@ -679,7 +677,7 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
             public void onSuccess(String result) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
-                //     Log.e("kxflog", "send2Order----------" + result);
+                Log.e("kxflog", "send2Order----------" + result);
                 try {
                     JSONObject object = new JSONObject(result);
                     boolean success = object.getBoolean("success");

@@ -229,7 +229,7 @@
                 android:id="@+id/food_detail_showline"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".15"
+                android:layout_weight="0.1"
                 android:background="@color/toolbar_bg"
                 android:gravity="center"
                 android:orientation="horizontal"

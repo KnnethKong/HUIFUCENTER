@@ -4,12 +4,16 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.xutils.common.Callback;
 
 import java.util.ArrayList;
 
 import gjcm.kxf.entity.RemindEntity;
 import gjcm.kxf.huifucenter.R;
+import gjcm.kxf.listener.BroadItemClick;
 
 /**
  * 消息查看
@@ -17,8 +21,20 @@ import gjcm.kxf.huifucenter.R;
  */
 public class RemindRecycleAdapter extends RecyclerView.Adapter<RemindRecycleAdapter.RemindViewHoder> {
     private ArrayList<RemindEntity> printEntities;
+    private BroadItemClick broadItemClick;
 
-    public RemindRecycleAdapter(ArrayList<RemindEntity> printEntities) {
+
+
+    public BroadItemClick getBroadItemClick() {
+        return broadItemClick;
+    }
+
+    public void setBroadItemClick(BroadItemClick broadItemClick) {
+        this.broadItemClick = broadItemClick;
+    }
+
+    public RemindRecycleAdapter(ArrayList<RemindEntity> printEntities,BroadItemClick broadItemClick) {
+        this.broadItemClick=broadItemClick;
         this.printEntities = printEntities;
     }
 
@@ -29,7 +45,7 @@ public class RemindRecycleAdapter extends RecyclerView.Adapter<RemindRecycleAdap
     }
 
     @Override
-    public void onBindViewHolder(RemindViewHoder myHolder, int position) {
+    public void onBindViewHolder(final RemindViewHoder myHolder, final int position) {
         RemindEntity entity = printEntities.get(position);
         myHolder.tid.setText("  " + entity.getId());
         long operid = entity.getOperId();
@@ -44,6 +60,15 @@ public class RemindRecycleAdapter extends RecyclerView.Adapter<RemindRecycleAdap
         myHolder.tstatus.setText(printtype);
         myHolder.tinfo.setText(entity.getMsgInfo());
         myHolder.tdate.setText(entity.getCreateTime());
+        myHolder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (broadItemClick!=null){
+                    int p = myHolder.getLayoutPosition();
+                    broadItemClick.clickItem(p);
+                }
+            }
+        });
     }
 
     @Override
@@ -53,6 +78,7 @@ public class RemindRecycleAdapter extends RecyclerView.Adapter<RemindRecycleAdap
 
     class RemindViewHoder extends RecyclerView.ViewHolder {
         private TextView tid, tstatus, tinfo, tdate;
+        private RelativeLayout relativeLayout;
 
         public RemindViewHoder(View itemView) {
             super(itemView);
@@ -60,6 +86,7 @@ public class RemindRecycleAdapter extends RecyclerView.Adapter<RemindRecycleAdap
             tdate = (TextView) itemView.findViewById(R.id.remind_item_date);
             tinfo = (TextView) itemView.findViewById(R.id.remind_item_info);
             tstatus = (TextView) itemView.findViewById(R.id.remind_item_status);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.remind_item_relative);
         }
     }
 }

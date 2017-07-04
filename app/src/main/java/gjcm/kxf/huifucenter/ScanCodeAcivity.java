@@ -43,7 +43,6 @@ import gjcm.kxf.tools.PrintTools;
 public class ScanCodeAcivity extends AppCompatActivity {
     private String userToken, blueadress, shouyy, undis, monery;
     private TextView txtstatus, txtorderamount, txtrealamount, txtdisamount, txtundisamount, txtpaytype, txtpaytime, txtordernumber, txtalino, txtwuyong, txttypeyh, txtshanghu;
-    private ProgressDialog dialog;
     private SharedPreferences sharedPreferences;
     private String storeName;
     private RelativeLayout typeLiner, merchantLiner;
@@ -51,13 +50,15 @@ public class ScanCodeAcivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dialog = null;
+        if (printTools!=null){
+            printTools.disconnect();
+        printTools=null;}
+        progressDialog = null;
         handler = null;
         sharedPreferences = null;
         typeLiner = null;
         merchantLiner = null;
         Log.i("kxflog", "MyScanActivity----onDestroy");
-
     }
 
     //    private  DemoHandler handler;
@@ -111,6 +112,9 @@ public class ScanCodeAcivity extends AppCompatActivity {
                     Log.i("kxflog", "onActivityResult----resultCode---" + no);
                     uploadData(no);
                     break;
+                case 55:
+                    Toast.makeText(ScanCodeAcivity.this, "打印机连接失败，请检查打印机", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     }
@@ -153,10 +157,13 @@ public class ScanCodeAcivity extends AppCompatActivity {
     }
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private ProgressDialog progressDialog;
 
     private void uploadData(String authcode) {
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        progressDialog = ProgressDialog.show(this, "", "正在查询...", true, false);
         final DecimalFormat df3 = new DecimalFormat("0.00");
-        dialog = ProgressDialog.show(this, "", "请稍候", false, false);
         RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/pay/wx-pay");
         requestParams.addHeader("token", userToken);
         requestParams.addBodyParameter("body", storeName);
@@ -173,9 +180,8 @@ public class ScanCodeAcivity extends AppCompatActivity {
         x.http().post(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-//                Log.e("kxflog", "result---result:" + result);
-                if (dialog != null)
-                    dialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
                 try {
                     JSONObject resultObj = new JSONObject(result);
                     String success = resultObj.getString("success");
@@ -236,7 +242,7 @@ public class ScanCodeAcivity extends AppCompatActivity {
                         txtpaytype.setText(orderType);
                         txtwuyong.setText(orderType + "优惠");
                         txtundisamount.setText(undis + " 元");
-                        txttypeyh.setText(s1+"元");
+                        txttypeyh.setText(s1 + "元");
                         txtalino.setText(tradeNo);
                         printData(s3, ordernumber, "无", orderType, s4, s2, storeName, shouyy, status, paytime, s1, paidinamount + "");
                     } else {
@@ -254,16 +260,16 @@ public class ScanCodeAcivity extends AppCompatActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.i("kxflog", "ex:" + ex);
-                if (dialog != null)
-                    dialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
                 Toast.makeText(ScanCodeAcivity.this, "获取信息错误", Toast.LENGTH_SHORT).show();
                 finish();
             }
 
             @Override
             public void onCancelled(CancelledException cex) {
-                if (dialog != null)
-                    dialog.dismiss();
+                if (progressDialog != null)
+                    progressDialog.dismiss();
             }
 
             @Override
@@ -274,7 +280,7 @@ public class ScanCodeAcivity extends AppCompatActivity {
 
 
     }
-
+    private PrintTools printTools;
 
     private void printData(final String orderAm, final String orderNumberStr, final String note, final String payType, final String realAm, final String youhui, final String mendian, final String shouyy, final String success,
                            final String paytime, final String typeyh, final String shshihou) {
@@ -286,12 +292,13 @@ public class ScanCodeAcivity extends AppCompatActivity {
         } else if (("on").equals(isprint)) {
             if (bluetoothAdapter.isEnabled()) {
                 if (!"".equals(blueadress)) {
-                    final PrintTools printTools = new PrintTools(this, blueadress);
-                    if (printTools.connect()) {
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                Looper.prepare();
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            Looper.prepare();
+                            printTools     = new PrintTools(getApplicationContext(), blueadress);
+                            if (printTools.connect()) {
                                 Bitmap bitmap;
                                 if (payType.equals("支付宝")) {
                                     bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.twotwo);
@@ -301,11 +308,12 @@ public class ScanCodeAcivity extends AppCompatActivity {
                                     bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.huifu);
                                 }
                                 printTools.txtcom(bitmap, orderAm, orderNumberStr, note, payType, realAm, youhui, mendian, shouyy, success, paytime, undis, typeyh, shshihou);
+                            } else {
+                                handler.sendEmptyMessage(55);
                             }
-                        }.start();
-                    } else {
-                        Toast.makeText(this, "打印机连接失败，请检查打印机", Toast.LENGTH_SHORT).show();
-                    }
+                        }
+                    }.start();
+
                 }
             }
         }

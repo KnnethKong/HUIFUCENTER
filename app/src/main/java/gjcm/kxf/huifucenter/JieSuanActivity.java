@@ -48,7 +48,7 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
     private String blueAdress, isprint, usertoken;
     private TextView txtMerchantAmount, txtTotalAmount, txtTotalOrderCount, txtRefundAmount, txtDiscountAmount, txtCardTotalAmount, txtRefundCount;
     private TextView txtRealPayAmount, txtServiceAmount, txtBeginTime, txtEndTime;
-    private TextView zfbAm, zfbReAm, zfbCount, wchatAm, wchatReAm, wchatCount;
+    private TextView zfbAm, zfbReAm, zfbCount, wchatAm, wchatReAm, wchatCount, zfbshss, wxshss;
     private ProgressDialog progressDialog;
     private String mendian, caozuoyuan;
     private static MyHandler myHandler;
@@ -102,6 +102,8 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
         wchatAm = (TextView) findViewById(R.id.scale_txtrewx);
         wchatCount = (TextView) findViewById(R.id.scale_txtrewxcount);
         wchatReAm = (TextView) findViewById(R.id.scale_txtrewxre);
+        zfbshss = (TextView) findViewById(R.id.scale_txtrezfbshss);
+        wxshss = (TextView) findViewById(R.id.scale_txtrewxshss);
         neturl = "/manager-order/predailysettle";
         initData(neturl);
     }
@@ -159,10 +161,9 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
         );
     }
 
-    private String wxPaySum, wxRefundSum, wxPayCount, AliPaySum, AliPayRefundSum, aliPayCount;
+    private String wxPaySum, wxRefundSum, wxPayCount, AliPaySum, AliPayRefundSum, aliPayCount,aliPayPaidAmount,wxPayPaidAmount;
 
     private void ddddd(String result) {
-        Log.i("kxflog", "ddddd-------" + result);
         print.setEnabled(true);
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -191,6 +192,8 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
             AliPaySum = merchantCountOrderCommon.optString("aliPaySum");
             AliPayRefundSum = merchantCountOrderCommon.optString("aliPayRefundSum");
             aliPayCount = merchantCountOrderCommon.optString("aliPayCount");
+            wxPayPaidAmount = merchantCountOrderCommon.optString("wxPayPaidAmount");
+            aliPayPaidAmount = merchantCountOrderCommon.optString("aliPayPaidAmount");
             if ("".equals(totalAmount))
                 totalAmount = "0.00";
             if ("".equals(discountAmount))
@@ -274,6 +277,8 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
         wchatAm.setText(wxPaySum + " 元");
         wchatCount.setText(wxPayCount);
         wchatReAm.setText(wxRefundSum + " 元");
+        wxshss.setText(wxPayPaidAmount+" 元");
+        zfbshss.setText(aliPayPaidAmount+" 元");
     }
 
     private void dismisProgres(String str) {
@@ -343,8 +348,7 @@ public class JieSuanActivity extends AppCompatActivity implements View.OnClickLi
                                 Looper.prepare();
                                 if (i == 1) {
                                     printTools.printScale(mendian, caozuoyuan, totalAmount, totalOrderCount, refundAmount, realPayAmount, discountAmount, merchantTotalAmount, cardTotalAmount, refundCount, serviceAmount, beginTime, endTime,
-                                            wxPaySum, wxRefundSum, wxPayCount, AliPaySum, AliPayRefundSum, aliPayCount );
-                                    Log.i("kxflog", "isnull--------" + isnull);
+                                            wxPaySum, wxRefundSum, wxPayCount, AliPaySum, AliPayRefundSum, aliPayCount,wxPayPaidAmount,aliPayPaidAmount);
                                 } else {
                                     printTools.printList(merchantDetails);
                                 }

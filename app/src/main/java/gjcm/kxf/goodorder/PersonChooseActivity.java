@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import gjcm.kxf.huifucenter.R;
 
 /**
@@ -30,6 +32,7 @@ public class PersonChooseActivity extends AppCompatActivity {
         setContentView(R.layout.person_choose_layout);
         deskId = getIntent().getStringExtra("deskid");
         initbar();
+
     }
 
     private void initbar() {

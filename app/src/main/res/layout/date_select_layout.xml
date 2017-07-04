@@ -67,7 +67,6 @@
         <TextView
             android:id="@+id/date_selct_jian"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
@@ -104,7 +103,6 @@
 
         <TextView
             android:id="@+id/date_selct_beigin"
-
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -123,7 +121,6 @@
             android:id="@+id/date_selct_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="2017-02-08"

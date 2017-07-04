@@ -1,172 +1,390 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <include
-        android:id="@+id/toolbar_lb"
-        layout="@layout/toolbar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp" />
-
-    <View
-        android:id="@+id/store_sum_wy"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_2_dp"
-        android:layout_below="@id/toolbar_lb"
-        android:background="#F1F1F1" />
-
-    <RelativeLayout
-        android:id="@+id/store_sum_rela"
-        android:layout_width="@dimen/dimen_0_dp"
-        android:layout_height="@dimen/dimen_0_dp"
-        android:layout_below="@id/store_sum_wy"
-        android:background="#1c8fdc"
-        app:layout_heightPercent="30%"
-        app:layout_widthPercent="100%">
-
-        <ImageView
-            android:id="@+id/store_txt_print"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_margin="@dimen/dimen_8_dp"
-            android:background="@drawable/white_drawble"
-            android:padding="@dimen/dimen_4_dp"
-            android:src="@mipmap/print" />
-
-        <ImageView
-            android:id="@+id/store_txt_date"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/dimen_8_dp"
-            android:background="@drawable/white_drawble"
-            android:padding="@dimen/dimen_4_dp"
-            android:src="@mipmap/date" />
-
-        <TextView
-            android:id="@+id/store_sum_sum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/white"
-            android:textSize="36sp" />
-
-        <TextView
-            android:id="@+id/store_txt_tmsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/store_sum_sum"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/bababa"
-            android:textSize="18sp" />
-    </RelativeLayout>
-
-
-    <LinearLayout
-        android:id="@+id/store_wuyong"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/store_sum_rela"
-        android:background="#F1F1F1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_heightPercent="10%">
-
-        <LinearLayout
-            android:layout_width="@dimen/dimen_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
-                android:text=" 单数：" />
-
-            <TextView
-                android:id="@+id/store_txt_oredrnum"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/dimen_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
-                android:text=" 优 惠：" />
-
-            <TextView
-                android:id="@+id/store_txt_youhui"
-                android:layout_width="wrap_content"
-
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:id="@+id/store_wuyong2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_1_dp"
-        android:layout_below="@id/store_wuyong"
-        android:background="#ffff" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/store_wuyong2"
-        android:background="#F1F1F1"
-        app:layout_heightPercent="10%">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="@dimen/dimen_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
+        <include
+            android:id="@+id/toolbar_lb"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <RelativeLayout
+            android:id="@+id/store_sum_rela"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:background="@color/toolbar_bg">
 
             <TextView
+                android:id="@+id/store_sum_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@mipmap/lock_pattern_node_pressed"
-                android:text=" 人 数：" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
 
             <TextView
-                android:id="@+id/store_txt_person"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="@dimen/dimen_0_dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
+                android:id="@+id/store_txt_tmsg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="" />
+                android:layout_below="@id/store_sum_sum"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/gray_cc"
+                android:textSize="16sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/store_txt_tmsg"
+                android:layout_marginBottom="14dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/store_txt_print"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@mipmap/sum6"
+                    android:gravity="center"
+                    android:text="打印"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="6dp"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/store_txt_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="4dp"
+                    android:drawableTop="@mipmap/sum7"
+                    android:gravity="center"
+                    android:text="日历"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/store_wuyong"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/store_date_liner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="#f0f0f0" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/store_sum_ri"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="日汇总"
+                        android:textColor="@color/lanss"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#cccc" />
+
+                    <TextView
+                        android:id="@+id/store_sum_qujian"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="区间汇总"
+                        android:textColor="@color/hei3"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/store_sum_qujianliner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/wuyong8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="开始时间"
+                        android:textColor="@color/hei3" />
+
+                    <!-- <ImageView
+                         android:layout_width="24dp"
+                         android:layout_height="24dp"
+                         android:layout_alignBottom="@+id/wuyong10"
+                         android:layout_alignParentEnd="true"
+                         android:layout_marginRight="8dp"
+                         android:src="@mipmap/sum4" />-->
+
+                    <TextView
+                        android:id="@+id/store_sum_be"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignBaseline="@id/wuyong8"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:text="2017-06-12"
+                        android:textColor="@color/hei3" />
+
+                    <TextView
+                        android:id="@+id/wuyong9"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/wuyong8"
+                        android:background="#cccc"
+                        android:textColor="@color/hei3" />
+
+                    <TextView
+                        android:id="@+id/wuyong10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/wuyong9"
+                        android:layout_margin="10dp"
+                        android:text="结束时间"
+                        android:textColor="@color/hei3" />
+
+                    <TextView
+                        android:id="@+id/store_sum_en"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/wuyong10"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="8dp"
+                        android:text="2017-06-12"
+                        android:textColor="@color/hei3" />
+
+
+                    <TextView
+                        android:id="@+id/wuyong11"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/wuyong10"
+                        android:background="#cccc"
+                        android:textColor="@color/hei3" />
+
+                    <Button
+                        android:id="@+id/store_sum_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="36dp"
+                        android:layout_below="@id/wuyong11"
+                        android:layout_margin="12dp"
+                        android:background="@drawable/dateok"
+                        android:onClick="personChooseOk"
+                        android:text="查询"
+                        android:textColor="@color/white"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/store_sum_riliner"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp">
+
+                    <TextView
+                        android:id="@+id/store_sum_jian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="—"
+                        android:textColor="@color/hei3"
+                        android:textSize="24sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/store_sum_nomarl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/hei3"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/store_sum_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="+"
+                        android:textColor="@color/hei3"
+                        android:textSize="24sp"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#f0f0f0" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/wuyong1"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/sum1" />
+
+                <TextView
+                    android:id="@+id/wuyong2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/wuyong1"
+                    android:text=" 单数：" />
+
+
+                <TextView
+                    android:id="@+id/store_sum_oredrnum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+
+                    android:textColor="@color/hei3" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/store_txt_refound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/wuyong8"
+                android:background="#cccc" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/wuyong3"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/sum2" />
+
+                <TextView
+                    android:id="@+id/wuyong4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+
+                    android:layout_toRightOf="@+id/wuyong3"
+                    android:text=" 优 惠：" />
+
+                <TextView
+                    android:id="@+id/store_sum_youhui"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+
+                    android:textColor="@color/hei3" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/wuyong8"
+                android:background="#cccc" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/wuyong5"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_margin="10dp"
+                    android:src="@mipmap/sum3" />
+
+                <TextView
+                    android:id="@+id/wuyong6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/wuyong5"
+                    android:text=" 人 数：" />
+
+                <TextView
+                    android:id="@+id/store_sum_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+
+                    android:textColor="@color/hei3" />
+
+                <TextView
+                    android:id="@+id/store_sum_refound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/wuyong8"
+                android:background="#cccc" />
+        </LinearLayout>
     </LinearLayout>
 
-</android.support.percent.PercentRelativeLayout>
-
+</ScrollView>

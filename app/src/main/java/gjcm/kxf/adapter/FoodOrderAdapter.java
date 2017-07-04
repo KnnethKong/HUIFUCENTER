@@ -72,6 +72,7 @@ public class FoodOrderAdapter extends BaseAdapter {
             case "已结账":
                 myHolder.tstatus.setBackgroundResource(R.drawable.yijiezhang);
                 break;
+            case "点菜中":
             case "待接单":
                 myHolder.tstatus.setBackgroundResource(R.drawable.daijiedan);
                 break;

@@ -3,14 +3,13 @@ package gjcm.kxf.huifucenter;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,25 +18,16 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
-import org.xutils.common.task.Priority;
 import org.xutils.http.RequestParams;
-import org.xutils.http.app.ResponseParser;
 import org.xutils.x;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import gjcm.kxf.tools.DetailAsyncTask;
 import gjcm.kxf.tools.NetTools;
@@ -52,7 +42,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private String refoundAmount, bftuiam;
     private TextView txtOrderNumber, txtOrderAmount, txtDiscountAmount, txtRealPayAmount, txtPayTime, txtStatus, txtcreate, txtTuiam;
     private TextView txtStore, txtsyy, txtwuyong, tuikuan, txtshanghushishou;
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private ProgressDialog progressDialog;
     SharedPreferences sharedPreferences;
     private Button printBnt;
@@ -61,7 +50,7 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView typekey, typevalu;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.showdetail_layout);//
@@ -97,8 +86,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         tuikuan.setOnClickListener(this);
         txtTuiam = (TextView) findViewById(R.id.skd_tuikuanjine);
         txtshanghushishou = (TextView) findViewById(R.id.detail_shanghushishou);
-//        imgBack.setVisibility(View.VISIBLE);
-//        imgBack.setOnClickListener(this);
         tradeno = getIntent().getStringExtra("tradeno");
         if (progressDialog != null)
             progressDialog.dismiss();
@@ -137,6 +124,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                     }
                     printData(tuikuan);
                     break;
+                case 55:
+                    Toast.makeText(OrderDetailActivity.this, "打印机连接失败，请检查打印机", Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
@@ -157,16 +147,13 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
             asyncTask = null;
         }
         queryOrder(strurl, tradeno);
-//        asyncTask = new DetailAsyncTask();
-//        asyncTask.execute(strurl, usertoken, tradeno);
-//        asyncTask.setTaskHandler(this);
-
     }
 
     private String typeyouhui, shanghushishou;
+    DecimalFormat df3 = new DecimalFormat("0.00");
 
     private void queryOrder(String url, final String orderNumber2) {
-        final DecimalFormat df3 = new DecimalFormat("0.00");
+
 
         url = NetTools.HOMEURL + url;
         final RequestParams params = new RequestParams(url);
@@ -178,26 +165,9 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 "}";
         params.setBodyContent(bodycon);
         params.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-        Log.e("kxflog", " params:" + orderNumber2 + params.getBodyContent()+"token:"+usertoken+ ""+ url);
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-              /*  StringBuilder sb = new StringBuilder();
-                AssetManager am = getApplicationContext().getAssets();
-                try {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            am.open("demos.json")));
-                    String next = "";
-                    while (null != (next = br.readLine())) {
-                        sb.append(next);
-                    }
-                    am.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    sb.delete(0, sb.length());
-                }*/
-
-                Log.e("kxflog", "onSuccess params:" + result);
                 if (progressDialog != null)
                     progressDialog.dismiss();
                 try {
@@ -227,14 +197,11 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                         typeLiner.setVisibility(View.VISIBLE);
                     typeyouhui = typeyh + "";
                     discountAmount = df3.format(shangjiayh);
-//                    discountAmount = data.opt("discountAmount").toString();
                     realPayAmount = data.opt("realPayAmount").toString();
                     Double sumRefundAmount = data.optDouble("sumRefundAmount");
                     Double dref = Double.parseDouble(orderAmount) - sumRefundAmount;
                     DecimalFormat df3 = new DecimalFormat("0.00");
                     refoundAmount = df3.format(dref);
-                    Log.i("kxflog", "sumRefundAmount:" + sumRefundAmount);
-//if (sumRefundAmount)
                     Object obj = data.opt("undiscountFee");
                     if (null != obj) {
                         undiscont = obj.toString();
@@ -298,7 +265,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                progressDialog.dismiss();
 
             }
 
@@ -337,87 +303,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private String orderAmount, orderNumber, discountAmount, realPayAmount, paytime, orderType, paystatus, paynote;
-/*
-
-    @Override
-    public void taskSuccessful(String json) {
-        Log.i("kxflog", json);
-        if (progressDialog != null)
-            progressDialog.dismiss();
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            String success = jsonObject.getString("success");
-            if (!success.equals("true")) {
-                success = jsonObject.getString("err_msg");
-                Toast.makeText(OrderDetailActivity.this, success, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            //{"success":true,"data":{"orderInfoDto":{"id":226384,"note":"","orderNumber":"201612281431303991132980","storeName":"乙密台韩国芝士排骨","realname":"shayan2","orderAmount":0.01,"status":1,"type":1,"payTime":"2016-12-28 14:31:31","createTime":"2016-12-28 14:31:30","channel":2,"sumRefundAmount":0.00,"discountAmount":0.00,"realPayAmount":0.01,"paidInAmount":0.01,"refundTime":"0000-00-00 00:00:00","orderRefundInfoDto":[null]}}}
-            JSONObject tjson = jsonObject.getJSONObject("data");
-            JSONObject data = tjson.getJSONObject("orderInfoDto");
-            orderid = data.optString("id");
-            orderAmount = data.opt("orderAmount").toString();
-            orderNumber = data.getString("orderNumber");
-            discountAmount = data.opt("discountAmount").toString();
-            realPayAmount = data.opt("realPayAmount").toString();
-
-            Object obj = data.opt("undiscountFee");
-            if (null != obj) {
-                undiscont = obj.toString();
-            } else {
-                undiscont = "";
-            }
-            String status = data.opt("status").toString();
-            paynote = data.optString("note");
-            if (status.equals("1")) {
-                paystatus = "支付成功";
-            } else if (status.equals("3")) {
-                ztk = data.optString("sumRefundAmount").toString();
-                paystatus = "已退款";
-                tuikuan.setVisibility(View.INVISIBLE);
-            } else if (status.equals("5")) {
-                paystatus = "部分退款";
-//                tuikuan.setVisibility(View.INVISIBLE);
-//                printBnt.setEnabled(false);
-            } else {
-                paystatus = "支付失败";
-                tuikuan.setVisibility(View.INVISIBLE);
-                printBnt.setEnabled(false);
-            }
-            paytime = data.getString("payTime");
-            orderType = data.opt("type").toString();
-            if (orderType.equals("1"))
-                orderType = "支付宝";
-            else
-                orderType = "微信";
-//            statusText = data.getString("statusText");
-            String createTime = data.getString("createTime");
-
-            realmoney = realPayAmount;
-            txtcreate.setText(createTime);
-            txtsyy.setText(orderType);
-            txtwuyong.setText(orderAmount);
-            txtDiscountAmount.setText(discountAmount + "元");
-            txtOrderAmount.setText(orderAmount + "元");
-            txtOrderNumber.setText(orderNumber);
-            txtPayTime.setText(paytime);
-            txtRealPayAmount.setText(realPayAmount + "元");
-            txtStatus.setText(paystatus);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        progressDialog.dismiss();
-
-    }
-
-    @Override
-    public void taskFailed() {
-        if (progressDialog != null)
-            progressDialog.dismiss();
-        Toast.makeText(this, "查询失败", Toast.LENGTH_SHORT).show();
-        finish();
-    }
-*/
 
     @Override
     public void onClick(View view) {
@@ -437,7 +322,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
 
    /* private void tuikuan(final String pwd, float free) {
         String url = NetTools.HOMEURL + "/pay/wx-pay-refund-self-store";
-        RequestParams params = new RequestParams(url);
         params.addHeader("token", usertoken);
         params.setConnectTimeout(10 * 1000);
         JSONObject jsonObject = new JSONObject();
@@ -457,35 +341,6 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         params.setBodyContent(jsonObject.toString());
         Log.i("kxflog", "tuikuan------>" + params.getBodyContent());
 //        params.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");"id=" + id + "&password=" + pwd + "&refundFee=" + free;
-        x.http().post(params, new Callback.CacheCallback<String>() {
-            @Override
-            public boolean onCache(String result) {
-                return false;
-            }
-
-            @Override
-            public void onSuccess(String result) {
-                Log.i("kxflog", "tuikuan------>" + result);
-
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                ex.printStackTrace();
-                Log.i("kxflog", "tuikuan------>" + ex.getMessage());
-
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-
-            }
-
-            @Override
-            public void onFinished() {
-
-            }
-        });
 
     }*/
 
@@ -584,24 +439,75 @@ public class OrderDetailActivity extends AppCompatActivity implements View.OnCli
         } else {
             if (bluetoothAdapter.isEnabled()) {
                 if (!"".equals(blueadress)) {
-                    final PrintTools printTools = new PrintTools(this, blueadress);
-                    if (printTools.connect()) {
-                        new Thread() {
-                            @Override
-                            public void run() {
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            final PrintTools printTools = new PrintTools(getApplicationContext(), blueadress);
+                            if (printTools.connect()) {
                                 Looper.prepare();
                                 if (isrefound == 1)
                                     printTools.printRefoundMonery(storeName, shouyy, orderNumber, orderAmount, "成功", ztk, discountAmount, paytime);
-                                else
-                                    printTools.printDeatail(orderAmount, orderNumber, paynote, orderType, realPayAmount, discountAmount, storeName, shouyy, paystatus, paytime, "0", typeyouhui, shanghushishou, bftuiam);
-
+                                else {
+//                                        Bitmap bitmap;
+//                                        if (orderType.equals("支付宝")) {
+//                                            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.twotwo);
+//                                        } else if (orderType.equals("微信")) {
+//                                            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.timgwcat);
+//                                        } else {
+//                                            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.huifu);
+//                                        }
+                                    printTools.writeByte(new byte[]{0x1b, 0x40});//初始化
+                                    printTools.writeByte(new byte[]{0x1b, 0x61, 0x00});//居左
+                                    // printTools.printBitmap(bitmap);
+                                    String fuk = "\n********** 订单凭证 **********\n\n";
+                                    String payType = "支付方式：" + orderType + "\n";
+                                    String realAm = "用户实付：" + realPayAmount + "\n";
+                                    String orderNumberS = "商家订单号：\n" + orderNumber + "\n";
+                                    String orderAm = "订单金额：" + orderAmount + "\n";
+                                    String mendian = "门店名：" + storeName + "\n";
+                                    String p_shouyy = "操作员：" + shouyy + "\n";
+                                    String success = "支付状态：" + paystatus + "\n";
+                                    String note = "备注：" + paynote + "\n";
+                                    String p_paytime = "支付时间：" + paytime + "\n";
+                                    printTools.writeString(fuk);
+                                    printTools.writeString(mendian);
+                                    printTools.writeString(p_shouyy);
+                                    printTools.writeString(orderNumberS);
+                                    printTools.writeString(success);
+                                    printTools.writeString(payType);
+                                    printTools.writeString(orderAm);
+                                    if ("0.00".equals(discountAmount) || "0.0".equals(discountAmount) || "0".equals(discountAmount)) {
+                                    } else {
+                                        String youhui = "商家优惠：" + discountAmount + "\n";
+                                        printTools.writeString(youhui);
+                                    }
+                                    if ("0.00".equals(typeyouhui) || "0.0".equals(typeyouhui) || "0".equals(typeyouhui)) {
+                                    } else {
+                                        String s1 = orderType + "优惠：" + typeyouhui + "\n";
+                                        printTools.writeString(s1);
+                                    }
+                                    String p_shanghushishou = "商户实收：" + shanghushishou + "\n";
+                                    printTools.writeString(p_shanghushishou);
+                                    printTools.writeString(realAm);
+                                    if (!bftuiam.equals("0")) {
+                                        String bufne = "部分退款金额：" + bftuiam + "\n";
+                                        printTools.writeString(bufne);
+                                    }
+                                    printTools.writeString(p_paytime);
+                                    printTools.writeString(note);
+                                    printTools.writeString("\n\n\n");
+                                           printTools.disconnect();
+                                }
+                            } else {
+                                ordrhandler.sendEmptyMessage(55);
                             }
-                        }.start();
-                    } else {
-                        Toast.makeText(this, "打印机连接失败，请检查打印机", Toast.LENGTH_SHORT).show();
-                    }
+                        }
+                    }.start();
                 }
             }
         }
     }
 }
+//     printTools.printDeatail(orderAmount, orderNumber, paynote, orderType, realPayAmount, discountAmount, storeName, shouyy, paystatus, paytime, "0", typeyouhui, shanghushishou, bftuiam);
+//                                                printDeatail(           orderAm,   orderNumberStr,  note,  payType,  realAm,  youhui,  mendian,  shouyy,  success,  paytime,  undis,  typeyh,shanghushishou,  tuiam) {

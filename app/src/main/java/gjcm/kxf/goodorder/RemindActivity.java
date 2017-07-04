@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import gjcm.kxf.adapter.RemindRecycleAdapter;
 import gjcm.kxf.entity.RemindEntity;
 import gjcm.kxf.huifucenter.R;
+import gjcm.kxf.listener.BroadItemClick;
 import gjcm.kxf.listener.MyScrollImpl;
 import gjcm.kxf.tools.NetTools;
 
@@ -35,7 +36,7 @@ import gjcm.kxf.tools.NetTools;
  * Created by kxf on 2017/3/8.
  * 提醒activity
  */
-public class RemindActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, MyScrollImpl {
+public class RemindActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, MyScrollImpl, BroadItemClick {
     private RecyclerView recyclerView;
     private Toolbar toolbar;
     private int mToolbarBottomMargin;
@@ -101,7 +102,7 @@ public class RemindActivity extends AppCompatActivity implements AdapterView.OnI
                             remindentity = new RemindEntity(id, operId, msgType, createTime, msgInfo);
                             remindList.add(remindentity);
                         }
-                        RemindRecycleAdapter remindRecycleAdapter = new RemindRecycleAdapter(remindList);
+                        RemindRecycleAdapter remindRecycleAdapter = new RemindRecycleAdapter(remindList, RemindActivity.this);
                         recyclerView.setAdapter(remindRecycleAdapter);
                         //  RemindAdapter adapter = new RemindAdapter(remindList, RemindActivity.this);
                         //listView.setAdapter(adapter);
@@ -193,5 +194,11 @@ public class RemindActivity extends AppCompatActivity implements AdapterView.OnI
     public void show() {
         //    Log.e("kxflog", "hide");
         toolbar.animate().translationY(0).setInterpolator(new AccelerateInterpolator(3));
+    }
+
+    @Override
+    public void clickItem(int p) {
+        String mid = remindList.get(p).getId()+"";
+        updateChanges(mid);
     }
 }

@@ -13,84 +13,137 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/dingdan_type"
-            style="@style/spiner_bg"
-            android:layout_width="120dp"
-            android:layout_height="30dp" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="20dp"
-            android:background="#bababa" />
-
-        <Button
-            android:id="@+id/dingdan_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:background="@null"
-            android:drawableRight="@mipmap/dropdown_icon"
-            android:text="时间选择"
-            android:textColor="@color/txtcolor"
-            android:textSize="14sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="horizontal">
 
+
+        <Spinner
+            android:id="@+id/dingdan_type"
+            style="@style/spiner_bg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#e5e5e5" />
+
+        <Button
+            android:id="@+id/dingdan_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawablePadding="@dimen/dimen_20_dp"
+            android:drawableRight="@mipmap/dropdown_icon"
+            android:text="时间选择"
+            android:textColor="@color/txtcolor"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="#e5e5e5" />
+
+        <Spinner
+            android:id="@+id/dingdan_type_pay"
+            style="@style/spiner_bg"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:entries="@array/orderPayType" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:background="#e1f0fc">
+
         <TextView
+            android:id="@+id/wuyong1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="共 " />
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="订单:"
+            android:textColor="@color/lanss" />
 
         <TextView
             android:id="@+id/dingdan_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:textSize="18dp" />
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_toRightOf="@id/wuyong1"
+            android:maxLength="8"
+            android:textColor="@color/lanss"
+            android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/wuyong3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" 笔订单" />
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_toRightOf="@id/dingdan_count"
+            android:text="笔"
+            android:textColor="@color/lanss" />
 
         <TextView
+            android:id="@+id/wuyong2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:text="共收入 " />
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/wuyong3"
+            android:text="收入:"
+            android:textColor="@color/lanss" />
 
         <TextView
             android:id="@+id/dingdan_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000"
-            android:textSize="18dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="6dp"
-            android:text="退款 "
-            android:textSize="18dp" />
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_toRightOf="@id/wuyong2"
+            android:maxLength="8"
+            android:textColor="@color/lanss"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/dingdan_reamount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#bababa"
-            android:textSize="18dp" />
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:maxLength="8"
+            android:textColor="@color/lanss"
+            android:textSize="16sp" />
 
-    </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/wuyong1"
+            android:layout_marginLeft="6dp"
+            android:layout_toLeftOf="@id/dingdan_reamount"
+            android:text="退款:"
+            android:textColor="@color/lanss" />
+
+
+    </RelativeLayout>
 
     <library.PullToRefreshListView
         android:id="@+id/dingdan_pullrorefewsh"
@@ -100,4 +153,6 @@
         android:layout_marginRight="2dp">
 
     </library.PullToRefreshListView>
+
+
 </LinearLayout>

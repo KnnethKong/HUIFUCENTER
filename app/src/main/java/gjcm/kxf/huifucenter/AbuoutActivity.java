@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.igexin.sdk.PushManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -32,7 +34,8 @@ import gjcm.kxf.tools.NetTools;
 public class AbuoutActivity extends AppCompatActivity implements View.OnClickListener {
     private RelativeLayout relativeLayout;
     private ProgressDialog dialog;
-    private TextView versionTxt;
+    private TextView netVersion, localVersion;
+    private String appversion;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,9 +43,10 @@ public class AbuoutActivity extends AppCompatActivity implements View.OnClickLis
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.about_layout);
         relativeLayout = (RelativeLayout) findViewById(R.id.about_updateliner);
-        versionTxt = (TextView) findViewById(R.id.about_showversion);
+        netVersion = (TextView) findViewById(R.id.about_showversion);
         relativeLayout.setOnClickListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.about_toobal);
+        localVersion = (TextView) findViewById(R.id.about_txt_msg);
 //        toolbar.inflateMenu(R.menu.mytoolemenu);
 //        toolbar.setNavigationIcon(R.mipmap.ic_drawer_home);
         toolbar.setTitle("关于");
@@ -55,6 +59,21 @@ public class AbuoutActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
             }
         });
+        getLocalVersion();
+    }
+
+    private void getLocalVersion() {
+        PackageManager packageManager = getPackageManager();
+        PackageInfo packInfo = null;
+        try {
+            packInfo = packageManager.getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        appversion = packInfo.versionCode + "";
+        localVersion.setText("当前版本：" + packInfo.versionName);
+        final String deviceno = PushManager.getInstance().getClientid(this);
+        Log.e("kxflog", deviceno);
     }
 
     @Override
@@ -74,28 +93,20 @@ public class AbuoutActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        PackageManager packageManager = getPackageManager();
-        PackageInfo packInfo = null;
-        try {
-            packInfo = packageManager.getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        final String appversion = packInfo.versionCode + "";
+
         RequestParams params = new RequestParams(NetTools.HOMEURL + "/store/app/getVersion");
         params.setConnectTimeout(5 * 1000);
         x.http().get(params, new Callback.CacheCallback<String>() {
             @Override
             public void onSuccess(String result) {
-//                Log.i("kxflog", result);
                 dialog.dismiss();
                 try {
                     JSONObject jsonObj = new JSONObject(result);
                     final String apkurl = jsonObj.optString("orderapkUrl");
                     String str = jsonObj.optString("apporderCode");
                     String upversion = jsonObj.optString("apporderVersionName");
-                    versionTxt.setText(upversion);
-                    Log.i("kxflog", str + "    " + appversion + "" + apkurl);
+                    netVersion.setText(upversion);
+                    //Log.i("kxflog", str + "    " + appversion + "" + apkurl);
                     if (!str.equals(appversion)) {
                         builder.setMessage("检测到新版本！\n修复了些许app异常");
                         builder.setTitle("版本更新");
@@ -129,7 +140,8 @@ public class AbuoutActivity extends AppCompatActivity implements View.OnClickLis
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                dialog.dismiss();
+                if (dialog != null)
+                    dialog.dismiss();
                 Toast.makeText(AbuoutActivity.this, "出现错误" + ex.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.i("kxflog", "onError:::::" + ex.getMessage());
 
@@ -138,10 +150,8 @@ public class AbuoutActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCancelled(Callback.CancelledException cex) {
                 Log.i("kxflog", "onCancelled:::::");//201701060940513730540440
-//                201701060850515874555740
-//                        201701060940513730540440
-
-                dialog.dismiss();
+                if (dialog != null)
+                    dialog.dismiss();
 
             }
 

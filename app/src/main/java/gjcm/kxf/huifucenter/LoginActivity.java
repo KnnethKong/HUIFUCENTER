@@ -185,6 +185,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString("cid", cid);
                         editor.putString("maccode", maccode);
                         editor.putString("merchantId",merchantId);
+                      //  editor.putString("logid", "100021");
                         Log.e("kxflog", "Loginactity  temp--->");
                         editor.commit();
 //                        Intent intent = new Intent(LoginActivity.this, MainFragment.class);
@@ -230,6 +231,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         issount = iss ? "0" : "1";
         if (dialog != null)
             dialog.dismiss();
+        dialog=null;
         dialog = ProgressDialog.show(this, "", "正在提交", false, false);
         RequestParams params = new RequestParams(NetTools.HOMEURL + "/main/app/deviceinfo");
         params.setConnectTimeout(10 * 1000);
@@ -248,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     JSONObject object = new JSONObject(result);
                     boolean success = object.getBoolean("success");
                     if (success) {
-                        loginMsg();
+                   loginMsg();
                     } else {
                         dialog.dismiss();
                         object.optString("err_code");
@@ -449,60 +451,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
-
-
-
-/*
-    public void senDeviceInfo(final String storeUserId, String usertoken, final String type, final String storeName, final String shouyy) {
-        final String deviceno = PushManager.getInstance().getClientid(this);
-        Log.i("kxflog", "deviceno:----" + deviceno);
-        if (dialog != null)
-            dialog.dismiss();
-        dialog = ProgressDialog.show(this, "", "请稍候...", false, false);
-//      Log.i("kxflog", "senDeviceInfo:" + mPushAgent.getRegistrationId());
-//        RequestParams requestParams = new RequestParams("http://www.vikpay.com/UserDevice/AddDevice");
-        RequestParams requestParams = new RequestParams("http://ts15898070.51mypc.cn:7070/UmengPushServer/UserDevice/AddDevice");
-        requestParams.addQueryStringParameter("storeid", storeUserId);
-        requestParams.addQueryStringParameter("umengtoken", deviceno);
-        requestParams.addQueryStringParameter("storeName", storeName);
-        requestParams.addQueryStringParameter("dtoken", usertoken);
-        requestParams.addQueryStringParameter("appversion", appversion);
-        requestParams.setCharset("UTF-8");
-        if (phoneimei != null)
-            requestParams.addQueryStringParameter("dimei", phoneimei);
-        if (phoneType != null)
-            requestParams.addQueryStringParameter("dnote", phoneType);
-        if (phonemac != null)
-            requestParams.addQueryStringParameter("dmac", phonemac);
-//        Log.e("kxflog", "requestParams:" + requestParams.toString());
-        x.http().post(requestParams, new Callback.CommonCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                Log.i("kxflog", "result:" + result + "");
-
-                dialog.dismiss();
-                Intent intent = new Intent(LoginActivity.this, MainFragment.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                Log.i("kxflog", "" + ex);
-                dialog.dismiss();
-                Toast.makeText(LoginActivity.this, "设备异常", Toast.LENGTH_SHORT).show();
-            }
-
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-                dialog.dismiss();
-            }
-
-            @Override
-            public void onFinished() {
-            }
-        });
-    }*/
-
 }

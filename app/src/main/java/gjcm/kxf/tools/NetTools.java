@@ -19,11 +19,12 @@ import java.net.URL;
  */
 public class NetTools {
  public static String HOMEURL = "http://merchant.vikpay.com:9050";
-//  public static String HOSTURL = "http://dc.vikpay.com/HuiFuOrder/";
- public static String HOSTURL = "http://weijing.f3322.net:7070/HuiFuOrder/";
+  public static String HOSTURL = "http://dc.vikpay.com/HuiFuOrder/";
+ //   public static String HOMEURL = "http://weijing.f3322.net:9090/";
+// public static String HOSTURL = "http://weijing.f3322.net:7070/HuiFuOrder/";
 //        public static String HOSTURL = "http://192.168.1.3:7070/UmengPushServer/";
     //public static String HOMEURL = "http://huifu.vikpay.com";
-    //public static String HOMEURL = "http://192.168.1.6:8080/testSSM";
+   //public static String HOMEURL = "http://192.168.1.6:8080";
 //    public static String HOMEURL = "http://client.vikpay.com";
     private String TAG = "kxflog";
     private StringBuffer sbuffer;

@@ -43,7 +43,7 @@ import library.PullToRefreshScrollView;
  */
 public class ReconciliationFragment extends Fragment implements View.OnClickListener {
     private TextView titlename, txtsjss, xtxtskje, txtssje, txtddje, txtddbs, txttkje, txttkbs, txtfwf, txtdiscount;
-    private TextView zfbAm, zfbReAm, zfbCount, wchatAm, wchatReAm, wchatCount;
+    private TextView zfbAm, zfbReAm, zfbCount, wchatAm, wchatReAm, wchatCount, zfbshss, wxshss;
     private Button storeSpiner, syySpiner;
     private Button dateSpiner;
     private String usertoken, usetype;
@@ -75,15 +75,6 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
         reconhandler.removeCallbacksAndMessages(null);
     }
 
-    private void showMeroory() {
-        ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
-        am.getMemoryInfo(info);
-        Log.i("kxflog", "系统剩余内存:" + (info.availMem >> 10) + "k");
-        Log.i("kxflog", "系统是否处于低内存运行：" + info.lowMemory);
-        Log.i("kxflog", "当系统剩余内存低于" + info.threshold + "时就看成低内存运行");
-    }
-
     android.os.Handler reconhandler = new android.os.Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -93,13 +84,14 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
             switch (msg.what) {
                 case 6:
                     result = bundle.getString("result");
-                    shastoreid = bundle.getInt("storeid");
+                    storeid = bundle.getInt("storeid");
                     storeSpiner.setText(result);
                     break;
                 case 12:
                     result = bundle.getString("result");
-                    shastoreuserid = bundle.getInt("storeuserid");
+                    storeuseid = bundle.getInt("storeuserid");
                     syySpiner.setText(result);
+                    getOrder(payStartTime, payEndTime, storeid, storeuseid);
                     break;
             }
 
@@ -134,6 +126,8 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
         wchatAm = (TextView) view.findViewById(R.id.recon_txtwx);
         wchatCount = (TextView) view.findViewById(R.id.recon_txtwxcount);
         wchatReAm = (TextView) view.findViewById(R.id.recon_txtwxrefound);
+        zfbshss = (TextView) view.findViewById(R.id.recon_txtzfbss);
+        wxshss = (TextView) view.findViewById(R.id.recon_txtwxss);
         dateSpiner.setOnClickListener(this);
         pullToRefreshScrollView = (PullToRefreshScrollView) view.findViewById(R.id.recon_scroll);
         pullToRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ScrollView>() {
@@ -144,8 +138,8 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                     storeid = 0;
                     storeuseid = 0;
                 }
-                if (shastoreid != 0 && shastoreuserid != 0) {
-                    getOrder(payStartTime, payEndTime, shastoreid, shastoreuserid);
+                if (storeid != 0 && storeuseid != 0) {
+                    getOrder(payStartTime, payEndTime, storeid, storeuseid);
                 } else {
                     getOrder(payStartTime, payEndTime, storeid, storeuseid);
                 }
@@ -163,24 +157,14 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
 
         storeSpiner.setOnClickListener(this);
         syySpiner.setOnClickListener(this);
-        getDefaut();
-
-    }
-
-
-    private void getDefaut() {
         Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String str = sdf.format(now.getTimeInMillis());
         payStartTime = str + " 00:00";
         payEndTime = str + " 23:59";
-        String params;
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("gjcmcenterkxf", Activity.MODE_PRIVATE);
         usertoken = sharedPreferences.getString("usertoken", "");
         usetype = sharedPreferences.getString("usertype", "");
-        int wuid = 0;
-        RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/manager-order/searchCount");
-        requestParams.addHeader("token", usertoken);
         if (usetype.equals("1")) {
             String str1 = sharedPreferences.getString("storeId", "");
             storeid = Integer.parseInt(str1);
@@ -195,115 +179,83 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
             storeuseid = 0;
             storeid = 0;
         }
-        params = "{" +
-                "\"dto\":{" + "\"payStartTime\":" + "\"" + payStartTime + "\"" + ",\"payEndTime\":" + "\"" + payEndTime + "\"" + ",\"realname\":" + null +
-                ",\"status\":" + -1 + ",\"storeId\":" + storeid + ",\"storeUserId\":" + storeuseid + "}," +
-                "\"page\":{" + "\"pageNO\":" + 1000 + ",\"everyPageCount\":" + 1 + "}" +
-                "}";
-        requestParams.setAsJsonContent(true);
-        Log.i("kxflog", params);
-        requestParams.setBodyContent(params);
-        requestParams.setConnectTimeout(10 * 1000);
-        x.http().post(requestParams, new Callback.CacheCallback<String>() {
-            @Override
-            public void onSuccess(String result) {
-                if (dialog != null)
-                    dialog.dismiss();
-                Log.i("kxflog", "onSuccess--------" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
 
-                    String issuc = jsonObject.optString("success");
-                    if (issuc.equals("false")) {
-                        Toast.makeText(context, "查询失败", Toast.LENGTH_SHORT).show();//
-                        return;
-                    }
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    JSONObject merchantCountOrderCommon = data.getJSONObject("merchantCountOrderCommon");
-                    String totalAmount = merchantCountOrderCommon.optString("totalAmount");
-                    String totalOrderCount = merchantCountOrderCommon.optString("totalOrderCount");
-                    String refundAmount = merchantCountOrderCommon.optString("refundAmount");
-                    String realPayAmount = merchantCountOrderCommon.optString("realPayAmount");
-                    String discountAmount = merchantCountOrderCommon.optString("discountAmount");
-                    String merchantTotalAmount = merchantCountOrderCommon.optString("merchantTotalAmount");
-                    String refundCount = merchantCountOrderCommon.optString("refundCount");
-                    String wxPaySum = merchantCountOrderCommon.optString("wxPaySum");
-                    String wxRefundSum = merchantCountOrderCommon.optString("wxRefundSum");
-                    String wxPayCount = merchantCountOrderCommon.optString("wxPayCount");
-                    String AliPaySum = merchantCountOrderCommon.optString("aliPaySum");
-                    String AliPayRefundSum = merchantCountOrderCommon.optString("aliPayRefundSum");
-                    String aliPayCount = merchantCountOrderCommon.optString("aliPayCount");
-                    String serviceAmount = merchantCountOrderCommon.optString("serviceAmount");
-                    String cardTotalAmount = merchantCountOrderCommon.optString("cardTotalAmount");
-                    realPayAmount = "".equals(realPayAmount) ? "0.00" : realPayAmount;
-                    refundAmount = "".equals(refundAmount) ? "0.00" : refundAmount;
-                    totalOrderCount = "".equals(totalOrderCount) ? "0" : totalOrderCount;
-                    discountAmount = "".equals(discountAmount) ? "0.00" : discountAmount;
-                    refundCount = "".equals(refundCount) ? "0" : refundCount;
-                    serviceAmount = "".equals(serviceAmount) ? "0.00" : serviceAmount;
-                    wxPaySum = "".equals(wxPaySum) ? "0.00" : wxPaySum;
-                    wxRefundSum = "".equals(wxRefundSum) ? "0.00" : wxRefundSum;
-                    wxPayCount = "".equals(wxPayCount) ? "0" : wxPayCount;
-                    AliPaySum = "".equals(AliPaySum) ? "0.00" : AliPaySum;
-                    AliPayRefundSum = "".equals(AliPayRefundSum) ? "0.00" : AliPayRefundSum;
-                    aliPayCount = "".equals(aliPayCount) ? "0" : aliPayCount;
-//                    Double du = Double.parseDouble(totalAmount) - Double.parseDouble(refundAmount);
-//                    DecimalFormat df3 = new DecimalFormat("0.00");
-//                   String merchantTotalAmount=df3.format(du);
-                    merchantTotalAmount = "".equals(merchantTotalAmount) ? "0.00" : merchantTotalAmount;
-                    txtssje.setText(realPayAmount + " 元");
-                    txttkje.setText(refundAmount + " 元");
-                    txtddbs.setText(totalOrderCount);
-                    txtddje.setText(totalAmount + " 元");
-                    txtdiscount.setText(discountAmount + " 元");
-//                    txtddbs.setText(merchantTotalAmount);
-                    txtsjss.setText(merchantTotalAmount + " 元");
-                    txttkbs.setText(refundCount);
-                    txtfwf.setText(serviceAmount + " 元");
-                    zfbCount.setText(aliPayCount);
-                    zfbReAm.setText(AliPayRefundSum + " 元");
-                    zfbAm.setText(AliPaySum + " 元");
-                    wchatAm.setText(wxPaySum + " 元");
-                    wchatCount.setText(wxPayCount);
-                    wchatReAm.setText(wxRefundSum + " 元");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onError(Throwable ex, boolean isOnCallback) {
-                if (dialog != null)
-                    dialog.dismiss();
-                Toast.makeText(context, "网络错误", Toast.LENGTH_SHORT).show();
-                showNull();
-            }
-
-            @Override
-            public void onCancelled(CancelledException cex) {
-                if (dialog != null)
-                    dialog.dismiss();
-
-            }
-
-            @Override
-            public void onFinished() {
-                if (dialog != null)
-                    dialog.dismiss();
-
-            }
-
-            @Override
-            public boolean onCache(String result) {
-                return false;
-            }
-        });
+        getOrder(payStartTime, payEndTime, storeid, storeuseid);
 
     }
 
+    private void showData(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+
+            String issuc = jsonObject.optString("success");
+            if (issuc.equals("false")) {
+                Toast.makeText(context, "查询失败", Toast.LENGTH_SHORT).show();//
+                return;
+            }
+            JSONObject data = jsonObject.getJSONObject("data");
+            JSONObject merchantCountOrderCommon = data.getJSONObject("merchantCountOrderCommon");
+            String totalAmount = merchantCountOrderCommon.optString("totalAmount");
+            String totalOrderCount = merchantCountOrderCommon.optString("totalOrderCount");
+            String refundAmount = merchantCountOrderCommon.optString("refundAmount");
+            String realPayAmount = merchantCountOrderCommon.optString("realPayAmount");
+            String discountAmount = merchantCountOrderCommon.optString("discountAmount");
+            String merchantTotalAmount = merchantCountOrderCommon.optString("merchantTotalAmount");
+            String refundCount = merchantCountOrderCommon.optString("refundCount");
+            String serviceAmount = merchantCountOrderCommon.optString("serviceAmount");
+            String cardTotalAmount = merchantCountOrderCommon.optString("cardTotalAmount");
+            String wxPaySum = merchantCountOrderCommon.optString("wxPaySum");
+            String wxPayPaidAmount = merchantCountOrderCommon.optString("wxPayPaidAmount");
+            String aliPayPaidAmount = merchantCountOrderCommon.optString("aliPayPaidAmount");
+            String wxRefundSum = merchantCountOrderCommon.optString("wxRefundSum");
+            String wxPayCount = merchantCountOrderCommon.optString("wxPayCount");
+            String AliPaySum = merchantCountOrderCommon.optString("aliPaySum");
+            String AliPayRefundSum = merchantCountOrderCommon.optString("aliPayRefundSum");
+            String aliPayCount = merchantCountOrderCommon.optString("aliPayCount");
+            aliPayPaidAmount = "".equals(aliPayPaidAmount) ? "0.00" : aliPayPaidAmount;
+            wxPayPaidAmount = "".equals(wxPayPaidAmount) ? "0.00" : wxPayPaidAmount;
+
+            realPayAmount = "".equals(realPayAmount) ? "0.00" : realPayAmount;
+            refundAmount = "".equals(refundAmount) ? "0.00" : refundAmount;
+            totalOrderCount = "".equals(totalOrderCount) ? "0" : totalOrderCount;
+            discountAmount = "".equals(discountAmount) ? "0.00" : discountAmount;
+            refundCount = "".equals(refundCount) ? "0" : refundCount;
+            serviceAmount = "".equals(serviceAmount) ? "0.00" : serviceAmount;
+//                    cardTotalAmount = "".equals(cardTotalAmount) ? "0.00" : cardTotalAmount;
+            wxPaySum = "".equals(wxPaySum) ? "0.00" : wxPaySum;
+            wxRefundSum = "".equals(wxRefundSum) ? "0.00" : wxRefundSum;
+            wxPayCount = "".equals(wxPayCount) ? "0" : wxPayCount;
+            AliPaySum = "".equals(AliPaySum) ? "0.00" : AliPaySum;
+            AliPayRefundSum = "".equals(AliPayRefundSum) ? "0.00" : AliPayRefundSum;
+            aliPayCount = "".equals(aliPayCount) ? "0" : aliPayCount;
+            txtssje.setText(realPayAmount + " 元");
+            txttkje.setText(refundAmount + " 元");
+            txtddbs.setText(totalOrderCount);
+            txtddje.setText(totalAmount + " 元");
+            txtdiscount.setText(discountAmount + " 元");
+//                    txtddbs.setText(merchantTotalAmount);
+            txtsjss.setText(merchantTotalAmount + " 元");
+            txttkbs.setText(refundCount);
+            txtfwf.setText(serviceAmount + " 元");
+            float faliam = Float.valueOf(AliPaySum);
+            if (faliam > 0) {
+                zfbCount.setText(aliPayCount);
+                zfbReAm.setText(AliPayRefundSum + " 元");
+                zfbAm.setText(AliPaySum + " 元");
+            }
+            wchatAm.setText(wxPaySum + " 元");
+            wchatCount.setText(wxPayCount);
+            wchatReAm.setText(wxRefundSum + " 元");
+            zfbshss.setText(aliPayPaidAmount + " 元");
+            wxshss.setText(wxPayPaidAmount + " 元");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     private void getOrder(String payStartTime, String payEndTime, int storeid, int storeuserid) {
+        Log.e("kxflog", storeid + "  " + storeuserid);
         RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/manager-order/searchCount");
         requestParams.addHeader("token", usertoken);
         String params = "{" +//"storeid":0,"storeuserid":0
@@ -311,7 +263,6 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                 ",\"status\":" + -1 + ",\"storeId\":" + storeid + ",\"storeUserId\":" + storeuserid + "}," +
                 "\"page\":{" + "\"pageNO\":" + 1000 + ",\"everyPageCount\":" + 1 + "}" +
                 "}";
-        Log.i("kxflog", params);
         requestParams.setAsJsonContent(true);
         requestParams.setConnectTimeout(10 * 1000);
         requestParams.setBodyContent(params);
@@ -323,70 +274,7 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                 if (dialog != null)
                     dialog.dismiss();
 //                Log.i("kxflog", "onSuccess--------" + result);
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-
-                    String issuc = jsonObject.optString("success");
-                    if (issuc.equals("false")) {
-                        Toast.makeText(context, "查询失败", Toast.LENGTH_SHORT).show();//
-                        return;
-                    }
-                    JSONObject data = jsonObject.getJSONObject("data");
-                    JSONObject merchantCountOrderCommon = data.getJSONObject("merchantCountOrderCommon");
-                    String totalAmount = merchantCountOrderCommon.optString("totalAmount");
-                    String totalOrderCount = merchantCountOrderCommon.optString("totalOrderCount");
-                    String refundAmount = merchantCountOrderCommon.optString("refundAmount");
-                    String realPayAmount = merchantCountOrderCommon.optString("realPayAmount");
-                    String discountAmount = merchantCountOrderCommon.optString("discountAmount");
-                    String merchantTotalAmount = merchantCountOrderCommon.optString("merchantTotalAmount");
-                    String refundCount = merchantCountOrderCommon.optString("refundCount");
-                    String serviceAmount = merchantCountOrderCommon.optString("serviceAmount");
-                    String cardTotalAmount = merchantCountOrderCommon.optString("cardTotalAmount");
-                    String wxPaySum = merchantCountOrderCommon.optString("wxPaySum");
-                    String wxRefundSum = merchantCountOrderCommon.optString("wxRefundSum");
-                    String wxPayCount = merchantCountOrderCommon.optString("wxPayCount");
-                    String AliPaySum = merchantCountOrderCommon.optString("aliPaySum");
-                    String AliPayRefundSum = merchantCountOrderCommon.optString("aliPayRefundSum");
-                    String aliPayCount = merchantCountOrderCommon.optString("aliPayCount");
-                    realPayAmount = "".equals(realPayAmount) ? "0.00" : realPayAmount;
-                    refundAmount = "".equals(refundAmount) ? "0.00" : refundAmount;
-                    totalOrderCount = "".equals(totalOrderCount) ? "0" : totalOrderCount;
-                    discountAmount = "".equals(discountAmount) ? "0.00" : discountAmount;
-                    refundCount = "".equals(refundCount) ? "0" : refundCount;
-                    serviceAmount = "".equals(serviceAmount) ? "0.00" : serviceAmount;
-//                    cardTotalAmount = "".equals(cardTotalAmount) ? "0.00" : cardTotalAmount;
-                    wxPaySum = "".equals(wxPaySum) ? "0.00" : wxPaySum;
-                    wxRefundSum = "".equals(wxRefundSum) ? "0.00" : wxRefundSum;
-                    wxPayCount = "".equals(wxPayCount) ? "0" : wxPayCount;
-                    AliPaySum = "".equals(AliPaySum) ? "0.00" : AliPaySum;
-                    AliPayRefundSum = "".equals(AliPayRefundSum) ? "0.00" : AliPayRefundSum;
-                    aliPayCount = "".equals(aliPayCount) ? "0" : aliPayCount;
-//                    merchantTotalAmount = "".equals(merchantTotalAmount) ? "0.00" : merchantTotalAmount;
-//                    Double du = Double.parseDouble(totalAmount) - Double.parseDouble(refundAmount);
-//                    DecimalFormat df3 = new DecimalFormat("0.00");
-//                    String merchantTotalAmount=df3.format(du);
-                    txtssje.setText(realPayAmount + " 元");
-                    txttkje.setText(refundAmount + " 元");
-                    txtddbs.setText(totalOrderCount);
-                    txtddje.setText(totalAmount + " 元");
-                    txtdiscount.setText(discountAmount + " 元");
-//                    txtddbs.setText(merchantTotalAmount);
-                    txtsjss.setText(merchantTotalAmount + " 元");
-                    txttkbs.setText(refundCount);
-                    txtfwf.setText(serviceAmount + " 元");
-                    float faliam = Float.valueOf(AliPaySum);
-                    if (faliam > 0) {
-                        zfbCount.setText(aliPayCount);
-                        zfbReAm.setText(AliPayRefundSum + " 元");
-                        zfbAm.setText(AliPaySum + " 元");
-                    }
-                    wchatAm.setText(wxPaySum + " 元");
-                    wchatCount.setText(wxPayCount);
-                    wchatReAm.setText(wxRefundSum + " 元");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                showData(result);
             }
 
             @Override
@@ -462,28 +350,23 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                 startActivityForResult(intent, 5);
                 break;
             case R.id.recon_spinershouyy:
-                if (shastoreid != 0) {
+                if (storeid != 0) {
 //                    Toast.makeText(context, "请选择门店", Toast.LENGTH_SHORT).show();
                     intent = new Intent(context, ReconUserSearch.class);
                     intent.putExtra("token", usertoken);
-                    intent.putExtra("storeid", shastoreid);
+                    intent.putExtra("storeid", storeid);
                     startActivityForResult(intent, 6);
                 }
                 break;
             case R.id.recon_spinerdate:
-                if (shastoreuserid != 0 && shastoreid != 0)
+                if (storeuseid != 0 && storeid != 0)
                     showDate();
                 break;
         }
-//        if (view != dateSpiner) {
-//            return;
-//        }
-
     }
 
-    private String payEndTime, payStartTime;
-    private int shastoreid = 0, shastoreuserid = 0;
 
+    private String payEndTime, payStartTime;
     private void showDate() {
         DatePickerDialog mChangeBirthDialog = new DatePickerDialog(
                 context);
@@ -501,7 +384,7 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                     storeid = 0;
                     storeuseid = 0;
                 }
-                getOrder(payStartTime, payEndTime, shastoreid, shastoreuserid);
+                getOrder(payStartTime, payEndTime, storeid, storeuseid);
                 String payend = payEndTime.substring(0, 10);
                 String paystart = payStartTime.substring(0, 10);
                 dateSpiner.setText(paystart + "\n" + payend);
@@ -512,14 +395,13 @@ public class ReconciliationFragment extends Fragment implements View.OnClickList
                 if (dialog != null)
                     dialog.dismiss();
                 dialog = ProgressDialog.show(context, "", "正在查询账单...", true, false);
-                Log.i("kxflog", end + "-------------------" + begin);
                 payStartTime = begin + " 00:00";
                 payEndTime = end + " 23:59";
                 if (usetype.equals("0")) {
                     storeid = 0;
                     storeuseid = 0;
                 }
-                getOrder(payStartTime, payEndTime, shastoreid, shastoreuserid);
+                getOrder(payStartTime, payEndTime, storeid, storeuseid);
                 dateSpiner.setText(begin + "\n" + end);
             }
         });

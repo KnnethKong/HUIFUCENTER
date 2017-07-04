@@ -55,7 +55,7 @@ import library.PullToRefreshListView;
 public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRefreshListener2<ListView>, AdapterView.OnItemClickListener {
     private String usertoken, usertype;
     private TextView titleText, amoText, reamoText, countText;
-    private Spinner spinnerType;
+    private Spinner spinnerType, sprinnerTypePay;
     private Button spinnerDate;
     private ArrayList<MerchantOrderCommon> lists;
     private PullToRefreshListView refreshListView;
@@ -97,6 +97,7 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
         titleText = (TextView) view.findViewById(R.id.title_storename);
         spinnerDate = (Button) view.findViewById(R.id.dingdan_date);
         spinnerType = (Spinner) view.findViewById(R.id.dingdan_type);
+        sprinnerTypePay = (Spinner) view.findViewById(R.id.dingdan_type_pay);
         refreshListView = (PullToRefreshListView) view.findViewById(R.id.dingdan_pullrorefewsh);
         amoText = (TextView) view.findViewById(R.id.dingdan_amount);
         countText = (TextView) view.findViewById(R.id.dingdan_count);
@@ -104,6 +105,9 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
         refreshListView.setMode(PullToRefreshBase.Mode.BOTH);
         listPullview = refreshListView.getRefreshableView();
         listPullview.setOnItemClickListener(this);
+        View noData = LayoutInflater.from(context).inflate(
+                R.layout.nodata_view, null);
+        refreshListView.setEmptyView(noData);
         refreshListView.setOnRefreshListener(this);
         titleText.setVisibility(View.VISIBLE);
         init();
@@ -174,6 +178,33 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
 
             }
         });
+        sprinnerTypePay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                lists.clear();
+                listPullview.setAdapter(null);
+                nowPage = 1;
+                switch (i) {
+                    case 0:
+                        payType = -1;
+                        getData();
+                        break;
+                    case 1:
+                        payType = 1;
+                        getData();
+                        break;
+                    case 2:
+                        payType = 0;
+                        getData();
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void showDate() {
@@ -186,15 +217,13 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
             public void onClick(String beiginyear, String beiginmonth, String beiginday, String endyear, String endmonth, String endday, String behours, String endhour) {
                 if (dialog != null)
                     dialog.dismiss();
-//                dialog = ProgressDialog.show(context, "", "正在查询", true, false);
                 payStartTime = beiginyear + "-" + beiginmonth + "-" + beiginday + " " + behours;
                 payEndTime = endyear + "-" + endmonth + "-" + endday + " " + endhour;
-                spinnerDate.setText(payStartTime + "\n" + payEndTime);
+                spinnerDate.setText(beiginmonth + "-" + beiginday + " 至 " + endmonth + "-" + endday);
                 lists.clear();
                 listPullview.setAdapter(null);
                 nowPage = 1;
                 orderstatus = "-1";
-//                loadAsync();
                 getData();
                 spinnerType.setSelection(0);
             }
@@ -203,17 +232,13 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
             public void date(String begin, String end) {
                 if (dialog != null)
                     dialog.dismiss();
-//                dialog = ProgressDialog.show(context, "", "正在查询", true, false);
-
                 payStartTime = begin + " 00:00";
                 payEndTime = end + " 23:59";
-
-//                begin = begin.substring(0, begin.length() - 3);
-//                end = end.substring(0, end.length() - 3);
-////                Log.i("kxflog", end + "-------------------" + begin);
-//                payStartTime = begin;
-//                payEndTime = end;
-                spinnerDate.setText(begin + "\n" + end);
+                String[] bs = begin.split("-");
+                String ss = bs[1] + "-" + bs[2];
+                String[] es = end.split("-");
+                String ess = es[1] + "-" + es[2];
+                spinnerDate.setText(ss + " 至 " + ess);
                 lists.clear();
                 listPullview.setAdapter(null);
                 nowPage = 1;
@@ -270,22 +295,29 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
                 dialog.dismiss();
             Toast.makeText(getContext(), "网络连接失败", Toast.LENGTH_SHORT).show();
         }
-        getData();
+        //  getData();
 //        loadAsync();
     }
 
     private MyAsyncTask myAsyncTask;
 
+    //type -1 all  0 wx 1zfb
+    private int payType = -1;
 
     private void getData() {
+        if (dialog != null) {
+            dialog.dismiss();
+            dialog = null;
+        }
         dialog = ProgressDialog.show(context, "", "正在查询", true, false);
         RequestParams requestParams = new RequestParams(path);
         requestParams.setConnectTimeout(10 * 1000);
         requestParams.setAsJsonContent(true);
         String params = "{" +
-                "\"dto\":{" + "\"payStartTime\":" + "\"" + payStartTime + "\"" + ",\"payEndTime\":" + "\"" + payEndTime + "\"" + ",\"status\":" + orderstatus + "}," +
+                "\"dto\":{" + "\"type\":" + payType + ",\"payStartTime\":" + "\"" + payStartTime + "\"" + ",\"payEndTime\":" + "\"" + payEndTime + "\"" + ",\"status\":" + orderstatus + "}," +
                 "\"page\":{" + "\"pageNO\":" + nowPage + ",\"everyPageCount\":" + everyPageCount + "}" +
                 "}";
+        Log.e("kxflog", "  " + params);
         requestParams.addHeader("token", usertoken);
         requestParams.setBodyContent(params);
         x.http().post(requestParams, new Callback.CommonCallback<String>() {
@@ -316,18 +348,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
         super.onStop();
 //        showMeroory();
     }
-
-    //
-//    private void loadAsync() {
-//        if (myAsyncTask != null) {
-//            myAsyncTask.cancel(true);
-//            myAsyncTask = null;
-//        }
-//        myAsyncTask = new MyAsyncTask();
-//        myAsyncTask.setTaskHandler(this);
-//        myAsyncTask.execute(new String[]{path, usertoken, nowPage + "", everyPageCount + "", payEndTime, payStartTime, orderstatus});
-//
-//    }
 
     private int pageNo;
 
@@ -424,10 +444,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
             dialog.dismiss();
         Toast.makeText(context, "加载失败", Toast.LENGTH_SHORT).show();
         refreshListView.onRefreshComplete();
-
-        //        countText.setText(0);
-//        reamoText.setText(0);
-//        amoText.setText(0);
     }
 
     private void showMeroory() {
@@ -443,9 +459,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
     //下拉
     @Override
     public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
-//        if (dialog != null)
-//            dialog.dismiss();
-//        dialog = ProgressDialog.show(context, "", "正在查询", false, false);
         refreshView.getLoadingLayoutProxy().setRefreshingLabel("正在加载");
         refreshView.getLoadingLayoutProxy().setPullLabel("别再拉了");
         refreshView.getLoadingLayoutProxy().setReleaseLabel("放开我...");
@@ -454,8 +467,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
         if (adapter != null)
             listPullview.setAdapter(null);
         nowPage = 1;
-//        loadAsync();
-
         getData();
     }
 
@@ -465,9 +476,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
     @Override
     public void onPullUpToRefresh(final PullToRefreshBase<ListView> refreshView) {
         isdwon = 2;
-//        if (dialog != null)
-//            dialog.dismiss();
-//        dialog = ProgressDialog.show(context, "", "正在查询", false, false);
         refreshView.getLoadingLayoutProxy().setRefreshingLabel("正在加载");
         refreshView.getLoadingLayoutProxy().setPullLabel("上拉加载更多");
         refreshView.getLoadingLayoutProxy().setReleaseLabel("放开我...");
@@ -482,7 +490,6 @@ public class DingdanFragment extends Fragment implements PullToRefreshBase.OnRef
         } else {
             nowPage++;
             getData();
-//            loadAsync();
         }
 
     }

@@ -99,7 +99,6 @@ public class MainFragment extends FragmentActivity implements View.OnClickListen
 
     }
 
-//    private ReceiptFragment huifuFragment;
 private HuifuFragment huifuFragment;
     private void currentFrame(int index) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -108,7 +107,6 @@ private HuifuFragment huifuFragment;
         hideFragments(fragmentTransaction);
         switch (index) {
             case 0:
-
                  huifuFragment = new HuifuFragment();
                 drawable = null;
                 txtHuifu.setTextColor(ContextCompat.getColor(this, R.color.dodgerblue));

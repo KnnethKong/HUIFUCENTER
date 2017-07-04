@@ -36,7 +36,6 @@ public class MyScanActivity extends AppCompatActivity implements QRCodeView.Dele
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("kxflog", "----MyScanActivity----onCreate-");
         getSupportActionBar().hide();
         jumpStatus = getIntent().getStringExtra("iscard");
         if (jumpStatus.equals("1")) {

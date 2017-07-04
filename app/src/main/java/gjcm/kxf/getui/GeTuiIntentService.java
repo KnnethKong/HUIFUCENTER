@@ -32,6 +32,7 @@ public class GeTuiIntentService extends GTIntentService {
     String TAG = "kxflog";
     private SpeechSynthesizer mTts;
     private String notimsg = "", path;
+    private String blueAddress;
 
     public GeTuiIntentService() {
 //        Log.d(TAG, "DemoIntentService    -> GeTuiIntentService");
@@ -43,6 +44,8 @@ public class GeTuiIntentService extends GTIntentService {
         mTts = SpeechSynthesizer.createSynthesizer(getApplicationContext(), null);
         SharedPreferences sharedPreferences = getSharedPreferences("gjcmcenterkxf", Activity.MODE_PRIVATE);
         path = sharedPreferences.getString("sdpath", "");
+        blueAddress = sharedPreferences.getString("blueadress", "");
+
     }
 
     @Override
@@ -55,7 +58,7 @@ public class GeTuiIntentService extends GTIntentService {
     public void onReceiveMessageData(Context context, GTTransmitMessage msg) {
         byte[] payload = msg.getPayload();
         String s = new String(payload);
-        Log.e(TAG, "GeTuiIntentService    -> onReceiveMessageData  print:"+ s);
+       // Log.e(TAG, "GeTuiIntentService    -> onReceiveMessageData  print:" + s);
         try {
             JSONObject payloadJson = new JSONObject(s);
             boolean isscancode = payloadJson.getBoolean("isscancode");
@@ -72,21 +75,52 @@ public class GeTuiIntentService extends GTIntentService {
                     palySond(sound);
                 }
                 boolean isPrint = payloadJson.getBoolean("isPrint");
-                if (isPrint){
+                if (isPrint) {
+                    String title = "\n********** 扫码订单 **********\n\n";
+
                     JSONObject printJson = payloadJson.getJSONObject("printJson");
-                    PrintTools printTools = new PrintTools(context, "00:11:22:33:44:55");
+                    PrintTools printTools = new PrintTools(context, blueAddress);
                     String payType = printJson.getString("payType");
-                    String storeName = printJson.getString("storeName");
-                    double orderAmount = printJson.getDouble("orderAmount");
-                    String payTime = printJson.getString("payTime");
-                    String orderNumber = printJson.getString("orderNumber");
-                    String payStatus = printJson.getString("payStatus");
-                    double realPay = printJson.getDouble("realPay");
-                    double merchantCheques = printJson.getDouble("merchantCheques");
-                    double merchantDiscount = printJson.getDouble("merchantDiscount");
-                    double payDiscount = printJson.getDouble("payDiscount");
-                    Object[] objects = new Object[]{storeName, orderNumber, payType, orderAmount, realPay, merchantCheques, payStatus, payTime, merchantDiscount, payDiscount};
-                    printTools.printScandPay(objects);
+                    String storeName =   "门 店 名:    " + printJson.getString("storeName") + "\n";
+                    String orderAmount = "订单金额:    " + printJson.getDouble("orderAmount") + "\n";
+                    String payTime =     "支付时间:    " + printJson.getString("payTime") + "\n";
+                    String orderNumber = "订 单 号: \n " + "    "+printJson.getString("orderNumber") + "\n";
+                    String payStatus =   "支付状态:    " + printJson.getString("payStatus")+"\n";
+                    Log.e("kxflog",Double.valueOf(printJson.get("realPay").toString())+" realpay ");
+                    String realPay =     "用户实付:    " + Double.valueOf(printJson.get("realPay").toString())+"\n";
+                    String merchantCheques ="￥ "+ printJson.getDouble("merchantCheques")+"\n";
+                    double s1 = printJson.getDouble("merchantDiscount");
+                    double s2 = printJson.getDouble("payDiscount");
+                    //Object[] objects = new Object[]{storeName, orderNumber, payType, orderAmount, realPay, merchantCheques, payStatus, payTime, merchantDiscount, payDiscount};
+                    // printTools.printScandPay(objects);
+                    if (printTools.connect()) {
+                        printTools.writeByte(new byte[]{0x1b, 0x40});//初始化
+                        printTools.writeByte(new byte[]{0x1b, 0x61, 0x00});//居左
+                        printTools.writeString(title);
+                        printTools.writeString(storeName);
+                        printTools.writeString("支付方式:    " + payType+"\n");
+                        printTools.writeString(orderAmount);
+                        printTools.writeString(realPay);
+                        printTools.writeString("商户实收:");
+                        byte[] zhong = new byte[]{0x20, 0x0A, 0x1B, 0x61, 0x01};
+                        printTools.writeByte(zhong);
+                        printTools.writeByte(new byte[]{27, 33, 16, 1});
+                        printTools.writeString(merchantCheques);
+                        printTools.writeString("\n");
+                        printTools.writeByte(new byte[]{27, 33, 0});
+                        printTools.writeByte(new byte[]{0x1b, 0x61, 0x00});
+                        if (s1 > 0) {
+                            printTools.writeString("商户优惠:    " + s1+"\n");
+                        }
+                        if (s2 > 0) {
+                            printTools.writeString(payType + "优惠:  " + s2+"\n");
+                        }
+                        printTools.writeString(payStatus);
+                        printTools.writeString(orderNumber);
+                        printTools.writeString(payTime);
+                        printTools.writeString("\n\n\n");
+                        printTools.disconnect();
+                    }
                 }
             }
 
@@ -97,7 +131,6 @@ public class GeTuiIntentService extends GTIntentService {
     }
 
     private void palySond(final String data) {
-
         new Thread() {
             @Override
             public void run() {
@@ -176,12 +209,12 @@ public class GeTuiIntentService extends GTIntentService {
 
     @Override
     public void onReceiveOnlineState(Context context, boolean online) {
-        Log.i(TAG, "DemoIntentService----->   onReceiveOnlineState " + "online = " + online);
+        // Log.i(TAG, "DemoIntentService----->   onReceiveOnlineState " + "online = " + online);
     }
 
     @Override
     public void onReceiveCommandResult(Context context, GTCmdMessage cmdMessage) {
 
-        Log.i(TAG, "DemoIntentService----->   onReceiveCommandResult " + "cmdMessage = " + cmdMessage.getAction() + cmdMessage.getPkgName());
+        //   Log.i(TAG, "DemoIntentService----->   onReceiveCommandResult " + "cmdMessage = " + cmdMessage.getAction() + cmdMessage.getPkgName());
     }
 }

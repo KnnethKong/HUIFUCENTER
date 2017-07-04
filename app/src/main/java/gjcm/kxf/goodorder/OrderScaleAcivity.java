@@ -10,9 +10,11 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -185,6 +187,16 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
                 actualTxt.setSelection(actualTxt.length());
             }
         });
+        actualTxt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int inType = actualTxt.getInputType(); // backup the input type
+                actualTxt.setInputType(InputType.TYPE_NULL); // disable soft input
+                actualTxt.onTouchEvent(motionEvent); // call native handler
+                actualTxt.setInputType(inType); // restore input type
+                return true;
+            }
+        });
 
     }
 
@@ -338,14 +350,15 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
                     JSONObject json = new JSONObject(result);
                     int back_code = json.getInt("back_code");
                     if (back_code == 200) {
-                        Toast.makeText(OrderScaleAcivity.this, "收款成功", Toast.LENGTH_SHORT).show();
-                        finish();
-                        //if (isAliWX.equals("3"))
+//                        Toast.makeText(OrderScaleAcivity.this, "收款成功", Toast.LENGTH_SHORT).show();
+//                        finish();
+//                        //if (isAliWX.equals("3"))
                         //prinXianJin();
-//                        if (orderWay == 3)
-//                            send2Order(orderId, "14");
-//                        else
-//                            showASKAlet();
+                        if (orderWay == 3)
+                            send2Order(orderId, "14");
+                        else
+                            OrderScaleAcivity.this.finish();
+
                     } else {
                         changeOrderFiled();
                         Toast.makeText(OrderScaleAcivity.this, "失败", Toast.LENGTH_SHORT).show();
@@ -392,7 +405,7 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-        //    Log.i("kxflog", "onActivityResult----resultCode---" + resultCode);
+            //    Log.i("kxflog", "onActivityResult----resultCode---" + resultCode);
             final Bundle bundle = data.getExtras();
             if (bundle != null) {
                 final String result = bundle.getString("result");
@@ -439,11 +452,11 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
 
 
     //踢向ali card
-    private void send2Order(String orderid, String status) {
+    private void send2Order(final String orderid, final String status) {
         if (progressDialog != null)
             progressDialog.dismiss();
         progressDialog = ProgressDialog.show(this, "", "正在更新支付宝状态...", true, false);
-        RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
+        RequestParams requestParams = new RequestParams("http://weijing.f3322.net:9090/diancan/sendorder");
         requestParams.addBodyParameter("merchantId", merchantId);
         requestParams.addBodyParameter("storeId", storeId);
         requestParams.addBodyParameter("orderId", orderid);
@@ -454,7 +467,21 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
             public void onSuccess(String result) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
+                progressDialog = null;
                 Log.e("kxflog", "send2Order----------" + result);
+                if (status.equals("14")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showASKAlet();
+                        }
+                    });
+                }
+                if (status.equals("15")) {
+                    OrderScaleAcivity.this.finish();
+                }
+
+
 //                try {
 //                    JSONObject object = new JSONObject(result);
 //                    boolean success = object.getBoolean("success");
@@ -469,20 +496,20 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
 //                }
-                progressDialog = null;
-                runOnUiThread(new Runnable() {
+              /*  runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         showASKAlet();
                     }
-                });
+                });*/
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
-                Toast.makeText(OrderScaleAcivity.this, "服务器有异常", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderScaleAcivity.this, "更新支付宝异常", Toast.LENGTH_SHORT).show();
+                OrderScaleAcivity.this.finish();
 
             }
 
@@ -511,15 +538,15 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
         tok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drwaOrderServer();
+             send2Order(orderId,"15");
             }
         });
-//        tcancel.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                OrderScaleAcivity.this.finish();
-//            }
-//        });
+        tcancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderScaleAcivity.this.finish();
+            }
+        });
 
     }
 
@@ -728,126 +755,42 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
 
     private String orderAm, orderNum, note, orderType, realAm, storeName, status, payTime, paidiAm;
     private double merchatYH, typeYH;
-
-   /* private void printOrderScale() {
-        orderAm = "订单金额：" + orderAm + "\n";
-        realAm = "实际支付：" + realAm + "\n";
-        storeName = "门店名：" + storeName + "\n";
-        orderType = "支付方式：" + orderType + "\n";
-        status = "支付状态：" + status + "\n";
-        final String s1 = orderType + "优惠：" + typeYH + "\n";
-        final String s2 = "商家优惠：" + merchatYH + "\n";
-        paidiAm = "商家实收：" + paidiAm + "\n";
-        orderNum = "订单编号：" + orderNum + "\n";
-        payTime = "支付时间：" + payTime + "\n";
-        final List<Map<String, Object>> entitys = TempTools.foodsEntities;
-        new Thread() {
-            @Override
-            public void run() {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                byte[] initprint = new byte[]{27, 64};//初始化
-                byte[] leftcenter = new byte[]{27, 97, 0};//靠左
-                byte[] bigstyle = new byte[]{27, 69, 0xf};//加粗模式
-                byte[] nobigstyle = new byte[]{27, 33};//取消加粗模式
-                byte[] bigtxt = new byte[]{29, 33, 17};//da
-                byte[] center = new byte[]{27, 97, 1};//居中
-                byte[] cutall = new byte[]{29, 86, 65, 0};//切纸
-                byte[] newline = new byte[]{10};//换行
-                try {
-                    buffer.write(initprint);
-                    String title = "----------菜品结单------------\n";
-                    buffer.write(title.getBytes("gbk"));
-                    int mapsize = entitys.size();
-                    for (int i = 0; i < mapsize; i++) {
-                        Map<String, Object> map = entitys.get(i);
-                        String t1 = map.get("name").toString();
-                        String t2 = map.get("num").toString();
-                        String t3 = map.get("price").toString();
-                        t1 = t1 + "      " + t2 + "x   " + t3 + "\n";
-                        buffer.write(t1.getBytes("gbk"));
-                    }
-                    buffer.write("\n".getBytes("gbk"));
-                    buffer.write(orderAm.getBytes("gbk"));
-                    buffer.write(realAm.getBytes("gbk"));
-                    buffer.write(orderType.getBytes("gbk"));
-                    buffer.write(status.getBytes("gbk"));
-                    buffer.write(paidiAm.getBytes("gbk"));
-                    if (merchatYH > 0.00) {
-                        buffer.write(s1.getBytes("gbk"));
-                    }
-                    if (typeYH > 0.00) {
-                        buffer.write(s2.getBytes("gbk"));
-                    }
-                    buffer.write(paidiAm.getBytes("gbk"));
-                    buffer.write(storeName.getBytes("gbk"));
-                    buffer.write(orderNum.getBytes("gbk"));
-                    buffer.write(payTime.getBytes("gbk"));
-                    buffer.write("\n".getBytes("gbk"));
-                    buffer.write(cutall);
-                } catch (IOException e) {
-                    handler.sendEmptyMessage(78);
-                }
-                String ipaddress = "192.168.1.199";
-                BufferedWriter bufferwriter;
-                BufferedReader bufferreader;
-                try {
-                    SocketAddress ipe = new InetSocketAddress(Inet4Address.getByName(ipaddress), 9100);
-                    Socket socket = new Socket();
-                    socket.connect(ipe, 1800);
-                    OutputStream outputStream = socket.getOutputStream();
-                    outputStream.write(buffer.toByteArray());
-                    outputStream.flush();
-                    outputStream.close();
-                    socket.close();
-//                    handler.sendEmptyMessage(80);
-                } catch (Exception e) {
-                    handler.sendEmptyMessage(78);
-
-                }
-            }
-        }.start();
-    }*/
+    private int isDesk = 0;
 
     /**
      * 更换订单信息
      *
      * @param realAm
-     */
-    private int isDesk = 0;
+
 
     private void drwaOrderServer() {
         if (progressDialog != null)
             progressDialog.dismiss();
         progressDialog = ProgressDialog.show(this, "", "正在提交...", true, false);
-        //Long orderid, Long deskid, Integer status,Integer payAm
-        RequestParams requestParams = new RequestParams(NetTools.HOSTURL + "OrderInfo/appPayOrder");
-        requestParams.addBodyParameter("orderid", orderId);
+        //String oid, String way, String pid, String did, String realAm
+        RequestParams requestParams = new RequestParams(NetTools.HOSTURL + "OrderInfo/changeOrderPay");
+        requestParams.addBodyParameter("oid", orderId);
         requestParams.addBodyParameter("deskid", deskid);
-        requestParams.addBodyParameter("status", isDesk, "int");
-
+        requestParams.addBodyParameter("status", isDesk + "");
         requestParams.addBodyParameter("payAm", allMonery);
         x.http().post(requestParams, new Callback.CacheCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                if (progressDialog != null)
-                    progressDialog.dismiss();
-                finish();
-            /*    JSONObject json = null;
-                try {
-                    json = new JSONObject(
-                            result);
-                    Log.i("kxflog", "drwaOrderServer------" + json.toString());
+                if (orderWay == 3) {
+                    send2Order(orderId, "14");
+                } else {
+                    if (progressDialog != null)
+                        progressDialog.dismiss();
+                    finish();
+                }
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 if (progressDialog != null)
                     progressDialog.dismiss();
-                Toast.makeText(OrderScaleAcivity.this, "连接服务错误", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderScaleAcivity.this, "更新收款失败" + ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -867,7 +810,7 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
             }
         });
     }
-
+     */
   /*  private void prinXianJin() {
         new Thread() {
             @Override

@@ -45,7 +45,8 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.shoukuan_newlayout);
+     //   setContentView(R.layout.shoukuan_newlayout);
+        setContentView(R.layout.shoukuan_layout3);
         initViewEvent();
     }
 
@@ -55,7 +56,7 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
         SharedPreferences sharedPreferences = getSharedPreferences("gjcmcenterkxf", Activity.MODE_PRIVATE);
         String storename = sharedPreferences.getString("storeName", "");
         ImageView skRQ;//收款二维码
-        TextView qingkong, shanchu;
+        //TextView qingkong, shanchu;
         skRQ = (ImageView) findViewById(R.id.title_skewm);
         linerShouSum = (LinearLayout) findViewById(R.id.sk_shoukuansum);// =
         findViewById(R.id.toolbar_back).setVisibility(View.VISIBLE);
@@ -149,7 +150,7 @@ public class CollectionActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    private DecimalFormat df3 = new DecimalFormat("0.00");
+//    private DecimalFormat df3 = new DecimalFormat("0.00");
     private Intent intent;
 
     @Override

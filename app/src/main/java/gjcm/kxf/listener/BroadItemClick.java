@@ -5,4 +5,5 @@ package gjcm.kxf.listener;
  */
 public interface BroadItemClick {
     void clickItem(int p);
+    void longClick(int p);
 }

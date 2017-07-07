@@ -13,9 +13,9 @@
         android:layout_marginTop="20dp"
         android:background="@color/colorAccent"
         android:gravity="center"
-        app:layout_widthPercent="80%"
         android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        app:layout_widthPercent="80%" />
 
 
     <TextView
@@ -24,7 +24,6 @@
         android:layout_height="60dp"
         android:layout_below="@id/seving_name"
         android:gravity="center"
-        android:text="标记上菜"
         app:layout_widthPercent="80%" />
 
     <View
@@ -41,8 +40,7 @@
         android:layout_height="60dp"
         android:layout_below="@id/serving_wuyong"
         android:gravity="center"
-        android:text="退 菜"
-        app:layout_widthPercent="80%"/>
+        app:layout_widthPercent="80%" />
 
     <View
         android:layout_width="0dp"
@@ -50,5 +48,5 @@
         android:layout_below="@id/serving_dwon"
         android:layout_marginBottom="10dp"
         android:background="@color/notecor"
-        app:layout_widthPercent="80%"/>
+        app:layout_widthPercent="80%" />
 </android.support.percent.PercentRelativeLayout>

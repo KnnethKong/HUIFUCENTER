@@ -201,4 +201,9 @@ public class RemindActivity extends AppCompatActivity implements AdapterView.OnI
         String mid = remindList.get(p).getId()+"";
         updateChanges(mid);
     }
+
+    @Override
+    public void longClick(int p) {
+
+    }
 }

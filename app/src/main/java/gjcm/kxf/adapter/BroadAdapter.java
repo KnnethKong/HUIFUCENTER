@@ -21,7 +21,7 @@ import gjcm.kxf.listener.BroadItemClick;
 /**
  * Created by kxf on 2017/2/22.
  */
-public  class BroadAdapter extends RecyclerView.Adapter<BroadAdapter.BoradHolder> {
+public class BroadAdapter extends RecyclerView.Adapter<BroadAdapter.BoradHolder> {
     private BroadItemClick broadItemClick;
 
     public BroadItemClick getBroadItemClick() {
@@ -57,11 +57,22 @@ public  class BroadAdapter extends RecyclerView.Adapter<BroadAdapter.BoradHolder
         if (status == 0) {
             holder.linearLayout.setBackground(null);
 //            holder.linearLayout.setBackgroundResource(R.drawable.broadnobg);
-        holder.linearLayout.setBackgroundColor(Color.parseColor("#c8c8c8"));
+            holder.linearLayout.setBackgroundColor(Color.parseColor("#c8c8c8"));
+
         } else {
             holder.linearLayout.setBackground(null);
             holder.linearLayout.setBackgroundColor(Color.parseColor("#004c94"));
-//            holder.linearLayout.setBackgroundResource(R.drawable.broadsebg);
+            holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (broadItemClick != null) {
+                        int p = holder.getLayoutPosition();
+                        broadItemClick.longClick(p);
+                        return true;
+                    } else
+                        return false;
+                }
+            });
         }
         //        holder.txtwt.setText(entity.getAreawaiter());
         holder.txtcz.setText(entity.getBroadname() + "  " + entity.getPersonnum());
@@ -76,6 +87,7 @@ public  class BroadAdapter extends RecyclerView.Adapter<BroadAdapter.BoradHolder
                 }
             }
         });
+
     }
 
     @Override

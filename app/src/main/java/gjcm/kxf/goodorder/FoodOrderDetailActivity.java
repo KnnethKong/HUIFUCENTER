@@ -438,7 +438,10 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
         final android.support.v7.app.AlertDialog tuidialog = builder.create();
         tuidialog.show();
         final TextView shangcai = (TextView) view.findViewById(R.id.serving_up);
+        shangcai.setText("上 菜");
         final TextView tuicai = (TextView) view.findViewById(R.id.serving_dwon);
+        shangcai.setText("退 菜");
+
         String sname = foodsEntities.get(i).getFname();
 
         TextView tname = (TextView) view.findViewById(R.id.seving_name);
@@ -666,8 +669,8 @@ public class FoodOrderDetailActivity extends AppCompatActivity implements View.O
         if (progressDialog != null)
             progressDialog.dismiss();
         progressDialog = ProgressDialog.show(FoodOrderDetailActivity.this, "", "正在更新到支付宝", true, false);
-        //RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
-        RequestParams requestParams = new RequestParams("http://weijing.f3322.net:9090/diancan/sendorder");
+        RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
+     //   RequestParams requestParams = new RequestParams("http://weijing.f3322.net:9090/diancan/sendorder");
         requestParams.addBodyParameter("merchantId", merchantId);
         requestParams.addBodyParameter("storeId", storeId);
         requestParams.addBodyParameter("orderId", orderid);

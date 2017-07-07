@@ -1,5 +1,6 @@
 package gjcm.kxf.goodorder;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,10 +13,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -85,6 +90,9 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         broadEntities = new ArrayList<>();
+        SharedPreferences sharedPreferences = getSharedPreferences("gjcmcenterkxf", Activity.MODE_PRIVATE);
+        merchantId = sharedPreferences.getString("merchantId", null);
+        storeId = sharedPreferences.getString("storeId", null);
         getData();
     }
 
@@ -135,6 +143,8 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
     private int dstatus = 3;
 
     private void getData() {
+        if (dialog!=null)
+            dialog.dismiss();
         dialog = ProgressDialog.show(this, "", "正在查询", true, false);
         SharedPreferences sharedPreferences = getSharedPreferences("gjcmcenterkxf", Context.MODE_PRIVATE);
         String storeid = sharedPreferences.getString("storeId", null);
@@ -146,7 +156,7 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
         x.http().post(requestParams, new Callback.CacheCallback<String>() {
             @Override
             public void onSuccess(String result) {
-            //    Log.i("kxflog", result);
+                //    Log.i("kxflog", result);
                 if (dialog != null)
                     dialog.dismiss();
                 try {
@@ -171,7 +181,7 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
                     BroadAdapter broadAdapter = new BroadAdapter(broadEntities, BroadChooseActivity.this);
                     recyclerView.setAdapter(broadAdapter);
                     recyclerView.addOnItemTouchListener(BroadChooseActivity.this);
-                    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,8,true));
+                    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, 8, true));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -215,6 +225,179 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
 //        startActivity(intent);
     }
 
+    @Override
+    public void longClick(int p) {
+
+
+        int status = broadEntities.get(p).getDstatus();
+        if (status == 0) return;
+        String id = broadEntities.get(p).getId();
+        showServing(id);
+    }
+
+
+    public void showServing(final String i) {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.serving_layout, null);
+        builder.setView(view);
+        builder.setCancelable(true);
+        builder.setView(view);
+        final android.support.v7.app.AlertDialog tuidialog = builder.create();
+        tuidialog.show();
+        final TextView queding = (TextView) view.findViewById(R.id.serving_up);
+        queding.setText("确 定");
+        final TextView quxiao = (TextView) view.findViewById(R.id.serving_dwon);
+        quxiao.setText("取 消");
+        TextView tname = (TextView) view.findViewById(R.id.seving_name);
+        tname.setText("清空桌位");
+        queding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tuidialog.dismiss();
+                changeOderinfoDesk(i);
+            }
+        });
+        quxiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tuidialog.dismiss();
+            }
+        });
+
+    }
+
+
+    public void changeOderinfoDesk(final String deskid) {
+        RequestParams requestParams = new RequestParams(NetTools.HOSTURL + "OrderDesk/ChangeQingZhuo");
+        requestParams.addBodyParameter("deskid", deskid);
+        requestParams.addBodyParameter("sid", storeId);
+        requestParams.addBodyParameter("mid", merchantId);
+        x.http().post(requestParams, new Callback.CacheCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("kxflog", result);
+                try {
+                    JSONObject json = new JSONObject(result);
+                    int code = json.getInt("back_code");
+                    if (code != 200) {
+                        Toast.makeText(BroadChooseActivity.this, "查询失败", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    String oid = json.optString("order_id");
+                    if (oid == null || "null".equals(oid)) {
+                        getData();
+                    } else {
+                        showStatusChoose(deskid, oid);
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Snackbar.make(recyclerView, "服务器连接异常", Snackbar.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Snackbar.make(recyclerView, "被取消", Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+
+            @Override
+            public boolean onCache(String result) {
+                return false;
+            }
+        });
+
+    }
+
+    public void showStatusChoose(final String deskid, final String oid) {
+        final android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.broad_status_choose, null);
+        builder.setView(view);
+        builder.setCancelable(true);
+        builder.setView(view);
+        final android.support.v7.app.AlertDialog tuidialog = builder.create();
+        tuidialog.show();
+        final TextView queding = (TextView) view.findViewById(R.id.broad_ok);
+        final TextView quxiao = (TextView) view.findViewById(R.id.broad_cancel);
+        final RadioGroup group = (RadioGroup) view.findViewById(R.id.radio_group);
+        queding.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int nowid = group.getCheckedRadioButtonId();
+                String os = "5";
+                if (nowid == R.id.radion_1) {
+                    os = "5";
+                } else if (nowid == R.id.radion_2) {
+                    os = "8";
+                } else {
+                    os = "9";
+                } tuidialog.dismiss();
+                changeOderinfoStatus(deskid, oid, os);
+            }
+        });
+        quxiao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tuidialog.dismiss();
+            }
+        });
+
+    }
+
+    public void changeOderinfoStatus(String deskid, String oid, String sts) {
+        RequestParams requestParams = new RequestParams(NetTools.HOSTURL + "OrderDesk/ChangeQZChoose");
+        requestParams.addBodyParameter("deskid", deskid);
+        requestParams.addBodyParameter("storeid", storeId);
+        requestParams.addBodyParameter("mid", merchantId);
+        requestParams.addBodyParameter("orderid", oid);
+        requestParams.addBodyParameter("status", sts);
+        x.http().post(requestParams, new Callback.CacheCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.e("kxflog", result);
+                getData();
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Snackbar.make(recyclerView, "服务器连接异常", Snackbar.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Snackbar.make(recyclerView, "被取消", Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+
+            @Override
+            public boolean onCache(String result) {
+                return false;
+            }
+        });
+
+    }
+
+    private String merchantId, storeId;
+
+
     public void checkDesk(final String deskid) {
         RequestParams requestParams = new RequestParams(NetTools.HOSTURL + "OrderDesk/CheckOrderId");
         requestParams.addBodyParameter("deskid", deskid);
@@ -225,7 +408,7 @@ public class BroadChooseActivity extends AppCompatActivity implements TabLayout.
                     JSONObject jsonObject = new JSONObject(result);
                     long orderid = jsonObject.optLong("order_id");
                     Intent intent;
-                //    Log.i("kxflog", "orderid:" + orderid);
+                    //    Log.i("kxflog", "orderid:" + orderid);
                     if (orderid > 0) {
                         intent = new Intent(BroadChooseActivity.this, FoodOrderDetailActivity.class);
                         intent.putExtra("orderid", orderid + "");

@@ -456,7 +456,7 @@ public class OrderScaleAcivity extends AppCompatActivity implements View.OnClick
         if (progressDialog != null)
             progressDialog.dismiss();
         progressDialog = ProgressDialog.show(this, "", "正在更新支付宝状态...", true, false);
-        RequestParams requestParams = new RequestParams("http://weijing.f3322.net:9090/diancan/sendorder");
+        RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/diancan/sendorder");
         requestParams.addBodyParameter("merchantId", merchantId);
         requestParams.addBodyParameter("storeId", storeId);
         requestParams.addBodyParameter("orderId", orderid);

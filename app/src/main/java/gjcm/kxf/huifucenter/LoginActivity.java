@@ -109,7 +109,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             PackageManager packageManager = getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageInfo(getPackageName(), 0);
             versionCode = packageInfo.versionCode;
-//            String name = packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -124,16 +123,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         getMyUUID();
     }
-//
-//    public void getUser() {
-//        SharedPreferences sharedPreferences = getSharedPreferences("gjcmcenterkxf", Activity.MODE_PRIVATE);
-//        String usertoken = sharedPreferences.getString("usertoken", "token");
-//        Log.i("kxflog", "usertoken:" + usertoken);
-//        if (!usertoken.equals("token"))
-//            startActivity(new Intent(LoginActivity.this, MainFragment.class));
-//    }
-
-
     private void getLoginType(final String cid, final String maccode) {
         RequestParams requestParams = new RequestParams(NetTools.HOMEURL + "/main/myselfnew");
         requestParams.addBodyParameter("token", tokenStr);
@@ -185,15 +174,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString("cid", cid);
                         editor.putString("maccode", maccode);
                         editor.putString("merchantId",merchantId);
-                      //  editor.putString("logid", "100021");
-                        Log.e("kxflog", "Loginactity  temp--->");
                         editor.commit();
-//                        Intent intent = new Intent(LoginActivity.this, MainFragment.class);
-//                        startActivity(intent);
-//                        finish();
-                    //    loginMsg();
                         seetingPrintSound(cid, maccode, tokenStr);
-//                        senDeviceInfo(Id,tokenStr,type,storeName,name);
                     }
 
                 } catch (JSONException e) {
@@ -313,14 +295,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Snackbar.make(btnSend, "用户名密码错误", Snackbar.LENGTH_SHORT).show();
                         return;
                     }
-                   // long storeid = jsonObject.getLong("sid");
-                    //long merchantid = jsonObject.getLong("mid");
                    SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("logid", loginid + "");
-//                    editor.putString("storeId", "4050");
-//                    editor.putString("merchantId","5070");
-//                    editor.putString("storeid", storeid + "");
-//                    editor.putString("merchantid", merchantid + "");
                    editor.commit();
                     Intent intent = new Intent(LoginActivity.this, MainFragment.class);
                     startActivity(intent);
@@ -447,7 +423,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     }
                 });
-
                 break;
         }
     }
